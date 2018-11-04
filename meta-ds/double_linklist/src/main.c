@@ -1,3 +1,8 @@
+/*
+* AUTHOR: Satya Sundar Sahu
+* mail id:- tinkusahu.com@gmail.com
+*/
+
 #include <double_head.h>
 
 int main()
