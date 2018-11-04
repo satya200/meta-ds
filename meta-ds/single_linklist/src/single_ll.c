@@ -1,3 +1,8 @@
+/*
+* AUTHOR: Satya Sundar Sahu
+* mail id:- tinkusahu.com@gmail.com
+*/
+
 #include <single_head.h>
 
 FILE *log_fp = NULL;
