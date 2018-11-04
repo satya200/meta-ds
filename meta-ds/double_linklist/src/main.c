@@ -1,11 +1,11 @@
-#include <single_head.h>
+#include <double_head.h>
 
 int main()
 {
 	int choice;
 	int ret = -1;
-	single_ll_t *head = NULL;
-	single_ll_t *temp = NULL;
+	double_ll_t *head = NULL;
+	double_ll_t *temp = NULL;
 	int data;
 	int node;
 
@@ -33,7 +33,10 @@ int main()
 			printf("=======>main in last insert:%d\n",ret);
 			break;
 		case 2:
-			ret = print_list(head);
+			ret = print_list(head, 1);
+			printf("in print:%d\n",ret);
+			printf("==========================================\n");
+			ret = print_list(head, 2);
 			printf("in print:%d\n",ret);
 			break;
 		case 3:
@@ -50,7 +53,7 @@ int main()
 		case 4:
 			printf("Enter data and node:");
 			scanf("%d%d",&data,&node);
-			ret = insert_middle(head,node,data);
+			ret = insert_middle(head,node-1,data);
 			if (ret == 0 && ret == 1) {
 				printf("Function success\n");
 			} else {

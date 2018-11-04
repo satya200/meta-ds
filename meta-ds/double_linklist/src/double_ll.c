@@ -1,11 +1,11 @@
-#include <single_head.h>
+#include <double_head.h>
 
 FILE *log_fp = NULL;
 
-int insert_last(single_ll_t **head, int data)
+int insert_last(double_ll_t **head, int data)
 {
 	log_fp = stdout;
-	single_ll_t *new_node = NULL;
+	double_ll_t *new_node = NULL;
 
 	if (head == NULL) {
 		ERR_PRINT("%s:%d :head value is NULL\n",__FUNCTION__,__LINE__);
@@ -13,12 +13,13 @@ int insert_last(single_ll_t **head, int data)
 	}
 	if (*head == NULL) {
 		DBG_PRINT("Fast Node insert\n");
-		(*head) = malloc(sizeof(single_ll_t));
+		(*head) = malloc(sizeof(double_ll_t));
 		if (*head == NULL) {
 			ERR_PRINT("%s:%d: malloc fail\n",__FUNCTION__,__LINE__);
 			return -2;
 		}
 		(*head)->next = NULL;
+		(*head)->prev = NULL;
 		(*head)->data = data;
 		
 	} else {
@@ -29,12 +30,13 @@ int insert_last(single_ll_t **head, int data)
 			return -3;
 		}
 
-		new_node = malloc(sizeof(single_ll_t));
+		new_node = malloc(sizeof(double_ll_t));
 		if (new_node == NULL) {
 			ERR_PRINT("%s:%d malloc fail\n",__FUNCTION__,__LINE__);
 			return -2;
 		} else {
 			new_node->next = NULL;
+			new_node->prev = (*head);
 			new_node->data = data;
 			(*head)->next = new_node;
 			
@@ -43,10 +45,10 @@ int insert_last(single_ll_t **head, int data)
 	return 0;
 }
 
-int insert_fast(single_ll_t **head, int data)
+int insert_fast(double_ll_t **head, int data)
 {
 	log_fp = stdout;
-	single_ll_t *new_node = NULL;
+	double_ll_t *new_node = NULL;
 
 	if (head == NULL) {
 		ERR_PRINT("%s:%d :head value is NULL\n",__FUNCTION__,__LINE__);
@@ -55,21 +57,24 @@ int insert_fast(single_ll_t **head, int data)
 	if (*head == NULL) {
 		DBG_PRINT("%s:fast node insert\n",__FUNCTION__);
 
-		(*head) = malloc(sizeof(single_ll_t));
+		(*head) = malloc(sizeof(double_ll_t));
 		if (*head == NULL) {
 			ERR_PRINT("%s:%d: malloc fail\n",__FUNCTION__,__LINE__);
 			return -2;
 		}
 		(*head)->next = NULL;
+		(*head)->prev = NULL;
 		(*head)->data = data;
 	} else {
-		new_node = malloc(sizeof(single_ll_t));
+		new_node = malloc(sizeof(double_ll_t));
 		if (new_node == NULL) {
 			ERR_PRINT("%s:%d: malloc fail\n",__FUNCTION__,__LINE__);
 			return -2;
 		}
 		new_node->data = data;
+		new_node->prev = NULL;
 		new_node->next = (*head);
+		(*head)->prev = new_node;
 		(*head) = new_node;
 	}
 	return 0;
@@ -80,10 +85,10 @@ int insert_sort()
 	return 0;
 }
 
-int insert_middle(single_ll_t *head, int node, int data)
+int insert_middle(double_ll_t *head, int node, int data)
 {
 	int ret = -1;
-	single_ll_t *temp = NULL,
+	double_ll_t *temp = NULL,
 		    *new_node = NULL;
 
 
@@ -108,7 +113,7 @@ int insert_middle(single_ll_t *head, int node, int data)
 		ERR_PRINT("Invalide node position. maye be 0 or -ve no.give greter that zero\n");
 		return -3;
 	}	
-	new_node = (single_ll_t *)malloc(sizeof(single_ll_t));
+	new_node = (double_ll_t *)malloc(sizeof(double_ll_t));
 	if (new_node == NULL) {
 		ERR_PRINT("%s:%d: malloc fail\n",__FUNCTION__,__LINE__);
 		return -2;
@@ -116,12 +121,14 @@ int insert_middle(single_ll_t *head, int node, int data)
 
 	new_node->data = data;
 	new_node->next = temp->next;
+	new_node->prev = temp;
+	temp->next->prev = new_node;
 	temp->next = new_node;
 
 	return 0;
 }
 
-int traverse_list(single_ll_t *temp, int node_cnt, single_ll_t **temp_last)
+int traverse_list(double_ll_t *temp, int node_cnt, double_ll_t **temp_last)
 {
 	if (temp == NULL || temp_last == NULL) {
 		ERR_PRINT("%s:%dParameter NULL\n",__FUNCTION__,__LINE__);
@@ -159,10 +166,10 @@ int traverse_list(single_ll_t *temp, int node_cnt, single_ll_t **temp_last)
 	return 0;
 }
 
-int del_list(single_ll_t **head, int node_idx, int pos)
+int del_list(double_ll_t **head, int node_idx, int pos)
 {
-	single_ll_t *temp = NULL;
-	single_ll_t *temp_free = NULL;
+	double_ll_t *temp = NULL;
+	double_ll_t *temp_free = NULL;
 	int ret = -1;
 
 	if ((head == NULL) && (*head == NULL)) {
@@ -173,12 +180,12 @@ int del_list(single_ll_t **head, int node_idx, int pos)
 	if (pos == 1) {
 		DBG_PRINT("Going to delete fast node\n");
 		if ((*head)->next == NULL) {
-			DBG_PRINT("List contains only one node\n");
-                        free(*head);
-                        (*head) = NULL;
-                        return 0;
-                }
+			free(*head);
+			(*head) = NULL;
+			return 0;
+		}
 		(*head) = (*head)->next;
+		(*head)->prev = NULL;
 		free(temp);
 		temp = NULL;
 		
@@ -192,10 +199,10 @@ int del_list(single_ll_t **head, int node_idx, int pos)
 		if (temp) {
 			DBG_PRINT("last node:%d\n",temp->data);
 			if (temp->next == NULL) {
-                                free(temp);
-                                *head = NULL;
-                                return 0;
-                        }
+				free(temp);
+				*head = NULL;
+				return 0;
+			}
 			temp_free = temp->next;
 			temp->next = NULL;
 			free(temp_free);
@@ -213,11 +220,12 @@ int del_list(single_ll_t **head, int node_idx, int pos)
 			temp_free = temp->next;
 			if (temp->next) {
 				temp->next = temp->next->next;
+				temp->next->prev = temp;
 			}
 			if (temp_free) {
 				free(temp_free);
+				temp_free = NULL;
 			}
-			temp_free = NULL;
 		}
 	} else { 
 		ERR_PRINT("%s:Invalid parameter\n",__FUNCTION__);
@@ -231,20 +239,34 @@ int rev_list()
 	return 0;
 }
 
-int print_list(single_ll_t *head)
+int print_list(double_ll_t *head, int pos)
 {
-	single_ll_t *temp = NULL;
+	double_ll_t *temp = NULL;
 	int print_cnt = 1;
+	int ret = -1;
 
-	if (head == NULL) {
-		ERR_PRINT("List is Empty.\n");
+	if (head == NULL && pos > 0) {
+		ERR_PRINT("List is Empty.or invalid position\n");
 		return -3;
 	}
-	temp = head;
+	if (pos == 2) {
+		ret = traverse_list(head, -1, &temp);
+		if (ret == -1) {
+			ERR_PRINT("In traverse_list() ret\n");
+			return -2;
+		}
+	} else {
+		DBG_PRINT("In fwd print\n");
+		temp = head;
+	}
 	DATA_PRINT("--------------------------------------------\n");
 	while (temp) {
 		DATA_PRINT("| %d |",temp->data);
-		temp = temp->next;
+		if (pos == 1) {
+			temp = temp->next;
+		} else {
+			temp = temp->prev;
+		}
 		if (print_cnt == 8) {
 			//DATA_PRINT("\n");
 			DATA_PRINT("\n--------------------------------------------\n");
@@ -256,10 +278,10 @@ int print_list(single_ll_t *head)
 	return 0;
 }
 
-int swap_adjusent_node(single_ll_t **head, int node_idx)
+int swap_adjusent_node(double_ll_t **head, int node_idx)
 {
-	single_ll_t *temp = NULL;
-	single_ll_t *temp_prev = NULL;
+	double_ll_t *temp = NULL;
+	double_ll_t *temp_prev = NULL;
 	int ret = -1;
 	if (head == NULL && (node_idx > 0)) {
 		ERR_PRINT("Invalid Param\n");
@@ -274,8 +296,11 @@ int swap_adjusent_node(single_ll_t **head, int node_idx)
 		temp_prev = (*head);
 		temp = temp_prev->next;
 		temp_prev->next = temp->next;
+		temp_prev->next->prev = temp_prev;
+		temp_prev->prev = temp;
 		temp->next = temp_prev;
 		(*head) = temp;
+		(*head)->prev = NULL;
 	} else if (node_idx-1 > 0) {
 		ret = traverse_list(*head, node_idx - 2, &temp_prev);
 		if (ret < 0) {
@@ -288,16 +313,21 @@ int swap_adjusent_node(single_ll_t **head, int node_idx)
 		}
 		temp = temp_prev->next;
 		temp_prev->next = temp->next;
+		temp_prev->next->prev = temp_prev;
 		temp->next = temp_prev->next->next;
+		if (temp->next) {
+			temp->next->prev = temp;
+		}
+		temp->prev = temp_prev->next;
 		temp_prev->next->next = temp;
 	} 
 	return 0;
 }
 
-int find_middle_node(single_ll_t *head, single_ll_t **temp)
+int find_middle_node(double_ll_t *head, double_ll_t **temp)
 {
-	single_ll_t *temp_1_move = NULL;
-	single_ll_t *temp_2_move = NULL;
+	double_ll_t *temp_1_move = NULL;
+	double_ll_t *temp_2_move = NULL;
 
 	if (head == NULL || temp == NULL) {
 		ERR_PRINT("%s:NULL POINTER\n",__FUNCTION__);
@@ -323,7 +353,7 @@ int find_loop()
 	return 0;
 }
 
-int find_node_from_last(single_ll_t *temp, int node, single_ll_t **temp_last)
+int find_node_from_last(double_ll_t *temp, int node, double_ll_t **temp_last)
 {
 	if (temp == NULL || temp_last == NULL) {
 		ERR_PRINT("%s:%dParameter NULL\n",__FUNCTION__,__LINE__);
@@ -331,8 +361,8 @@ int find_node_from_last(single_ll_t *temp, int node, single_ll_t **temp_last)
 	}
 	(*temp_last) = temp;
 	if ((*temp_last)->next == NULL) {
-                return 0;
-        }
+		return 0;
+	}
 	if (node > 1) {
 		node = node - 1;
 		while ((temp->next) && ((*temp_last)->next)) {
@@ -351,9 +381,9 @@ int find_node_from_last(single_ll_t *temp, int node, single_ll_t **temp_last)
 	return 0;
 }
 
-void exist_list(single_ll_t **head)
+void exist_list(double_ll_t **head)
 {
-	single_ll_t *temp = NULL;
+	double_ll_t *temp = NULL;
 	if (head && (*head)) {
 		DBG_PRINT("IN %s\n",__FUNCTION__);
 		while(*head) {
