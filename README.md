@@ -6,3 +6,8 @@ This repo contains all data structures program.
 
 2. Folder double_linklist
 	It Contains all kind of linked list Function
+
+3. Folder double_linklist_opt
+	This Folder contains optimize double linked list
+	This is implemented using single self referncial
+	pointer.
