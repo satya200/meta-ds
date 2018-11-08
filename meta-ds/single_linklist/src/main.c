@@ -18,7 +18,7 @@ int main()
 	while(1) {
 		printf("PLEASE ENTER UR CHOICE:\n");
 		printf("0: Total App Exit\n1: for inser last\n2: for print all\n3: insert fast\n4: insert middle\n\
-5: Delete node\n6: Swap 2 adj node\n7: Find Middle Node\n");
+5: Delete node\n6: Swap 2 adj node\n7: Find Middle Node\n8: check loop\n9: create loop\n");
 		scanf("%d",&choice);
 		switch (choice) {
 		case 1:
@@ -97,6 +97,33 @@ int main()
 				printf("MIDDLE NODE:%d\n",temp->data);
 				break;
 			}
+		case 8:
+			ret = check_loop(head, &temp);
+			if (ret == -1) {
+				printf("NULL pointer\n");
+			} else if (ret == -2) {
+				printf("Loop found\n");
+				if (temp) {
+					printf("Start point:%d\n",temp->data);
+				} else {
+					printf("Starting point not avl in temp\n");
+				}
+			} else if (ret == 0) {
+				printf("NO LOOP\n");
+			} else {
+				printf("Invalid return value\n");
+			}
+			break;
+		case 9:
+			printf("Enter start and end\n");
+			scanf("%d%d",&data,&node);
+			ret = create_loop(head, data, node);
+			if (ret == 0) {
+				printf("loop created.\n");
+			} else {
+				printf("Loop not created\n");
+			}
+			break;
 		case 0:
 			exist_list(&head);
 			return 0;

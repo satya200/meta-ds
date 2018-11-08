@@ -386,6 +386,46 @@ int find_node_from_last(double_ll_t *temp, int node, double_ll_t **temp_last)
 	return 0;
 }
 
+int check_loop(double_ll_t *head, double_ll_t **temp)
+{
+        double_ll_t *head_bak = NULL;
+
+        if (head == NULL && temp == NULL) {
+                ERR_PRINT("NULL pointer\n");
+                return -1;
+        }
+        if (head->next == NULL) {
+                DBG_PRINT("Only one node.No loop\n");
+        } else {
+                head_bak = head;
+                (*temp) = head;
+                do {
+                        if ((*temp) && head && head->next) {
+                                (*temp) = (*temp)->next;
+                                head = head->next->next;
+
+                        } else {
+                                DBG_PRINT("check_loop():NO LOOP\n");
+                                break;
+                        }
+                }while ((*temp) != head);
+                if ((*temp) == head) {
+                        DBG_PRINT("LOOP FOUND.%d:%d\n",(*temp)->data,head->data);
+                        head = head_bak;
+                        while (head) {
+                                head = head->next;
+                                if ((*temp)->next == head) {
+                                        DBG_PRINT("LOOP START FOUND\n");
+                                        return -2;
+                                } else {
+                                        (*temp) = (*temp)->next;
+                                }
+                        }
+                }
+        }
+        return 0;
+}
+
 void exist_list(double_ll_t **head)
 {
 	double_ll_t *temp = NULL;

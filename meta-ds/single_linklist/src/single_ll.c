@@ -248,7 +248,9 @@ int print_list(single_ll_t *head)
 	temp = head;
 	DATA_PRINT("--------------------------------------------\n");
 	while (temp) {
+		//sleep(1); Use for Testing
 		DATA_PRINT("| %d |",temp->data);
+		fflush(stdout);
 		temp = temp->next;
 		if (print_cnt == 8) {
 			//DATA_PRINT("\n");
@@ -352,6 +354,76 @@ int find_node_from_last(single_ll_t *temp, int node, single_ll_t **temp_last)
 	} else {
 		DBG_PRINT("PLEASE USE traverse_list() to get last node\n");
 		return -3;
+	}
+	return 0;
+}
+
+int create_loop(single_ll_t *head, int start, int end)
+{
+	single_ll_t *temp = NULL,
+		   *temp1 = NULL;;
+
+	if ((head != NULL) && (start > 1) && (end > 1) && (start > end)) {
+		temp = head;
+		start--;
+		end--;
+		while (start) {
+			if (temp) {
+				temp = temp->next;
+				if (end == 1)
+					temp1 = temp;
+				start--;
+				end--;
+				
+			} else {
+				return -1;
+			}
+		}
+		temp->next = temp1;
+		DBG_PRINT("LOOP CREATED\n");
+	} else {
+		printf("Not valid input\n");
+		return -1;
+	}
+	return 0;
+}
+
+int check_loop(single_ll_t *head, single_ll_t **temp)
+{
+	single_ll_t *head_bak = NULL;
+
+	if (head == NULL && temp == NULL) {
+		ERR_PRINT("NULL pointer\n");
+		return -1;
+	}
+	if (head->next == NULL) {
+		DBG_PRINT("Only one node.No loop\n");
+	} else {
+		head_bak = head;
+		(*temp) = head;
+		do {
+			if ((*temp) && head && head->next) {
+				(*temp) = (*temp)->next;
+				head = head->next->next;
+				
+			} else {
+				DBG_PRINT("check_loop():NO LOOP\n");
+				break;
+			}
+		}while ((*temp) != head);
+		if ((*temp) == head) {
+			DBG_PRINT("LOOP FOUND.%d:%d\n",(*temp)->data,head->data);
+			head = head_bak;
+			while (head) {
+				head = head->next;
+				if ((*temp)->next == head) {
+					DBG_PRINT("LOOP START FOUND\n");
+					return -2;
+				} else {
+					(*temp) = (*temp)->next;
+				}
+			}
+		}
 	}
 	return 0;
 }

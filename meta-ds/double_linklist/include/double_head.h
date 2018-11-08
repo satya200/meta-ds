@@ -40,3 +40,4 @@ void exist_list(double_ll_t **);
 int find_node_from_last(double_ll_t *temp, int node, double_ll_t **temp_last);
 int swap_adjusent_node(double_ll_t **, int);
 int find_middle_node(double_ll_t *, double_ll_t **);
+int check_loop(double_ll_t *, double_ll_t **);
