@@ -7,7 +7,7 @@
 
 FILE *log_fp = NULL;
 
-int insert_last(double_ll_t **head, int data)
+int insert_last(double_ll_t **head, struct Data data)
 {
 	log_fp = stdout;
 	double_ll_t *new_node = NULL;
@@ -25,7 +25,7 @@ int insert_last(double_ll_t **head, int data)
 		}
 		(*head)->next = NULL;
 		(*head)->prev = NULL;
-		(*head)->data = data;
+		memcpy(&((*head)->data), &data, sizeof(data));
 		
 	} else {
 		DBG_PRINT("%s:Insert last node\n",__FUNCTION__);
@@ -42,7 +42,7 @@ int insert_last(double_ll_t **head, int data)
 		} else {
 			new_node->next = NULL;
 			new_node->prev = (*head);
-			new_node->data = data;
+			memcpy(&(new_node->data), &data, sizeof(data));
 			(*head)->next = new_node;
 			
 		}
@@ -50,7 +50,7 @@ int insert_last(double_ll_t **head, int data)
 	return 0;
 }
 
-int insert_fast(double_ll_t **head, int data)
+int insert_fast(double_ll_t **head, struct Data data)
 {
 	log_fp = stdout;
 	double_ll_t *new_node = NULL;
@@ -69,14 +69,14 @@ int insert_fast(double_ll_t **head, int data)
 		}
 		(*head)->next = NULL;
 		(*head)->prev = NULL;
-		(*head)->data = data;
+		memcpy(&((*head)->data), &data, sizeof(data));
 	} else {
 		new_node = malloc(sizeof(double_ll_t));
 		if (new_node == NULL) {
 			ERR_PRINT("%s:%d: malloc fail\n",__FUNCTION__,__LINE__);
 			return -2;
 		}
-		new_node->data = data;
+		memcpy(&(new_node->data), &data, sizeof(data));
 		new_node->prev = NULL;
 		new_node->next = (*head);
 		(*head)->prev = new_node;
@@ -90,7 +90,7 @@ int insert_sort()
 	return 0;
 }
 
-int insert_middle(double_ll_t *head, int node, int data)
+int insert_middle(double_ll_t *head, int node, struct Data data)
 {
 	int ret = -1;
 	double_ll_t *temp = NULL,
@@ -124,7 +124,7 @@ int insert_middle(double_ll_t *head, int node, int data)
 		return -2;
 	}
 
-	new_node->data = data;
+	memcpy(&(new_node->data), &data, sizeof(data));
 	new_node->next = temp->next;
 	new_node->prev = temp;
 	temp->next->prev = new_node;
@@ -163,7 +163,7 @@ int traverse_list(double_ll_t *temp, int node_cnt, double_ll_t **temp_last)
 	}
 	if (*temp_last) {
 		(*temp_last) = temp;
-		DBG_PRINT("In trav:%d:data:%d\n",(*temp_last)->data, temp->data);
+		DBG_PRINT("In trav:%d:data:%d\n",(*temp_last)->data.data, temp->data.data);
 	} else {
 		ERR_PRINT("Error in Trav\n");
 		return -1;
@@ -202,7 +202,7 @@ int del_list(double_ll_t **head, int node_idx, int pos)
 			return -2;
 		}
 		if (temp) {
-			DBG_PRINT("last node:%d\n",temp->data);
+			DBG_PRINT("last node:%d\n",temp->data.data);
 			if (temp->next == NULL) {
 				free(temp);
 				*head = NULL;
@@ -221,7 +221,7 @@ int del_list(double_ll_t **head, int node_idx, int pos)
 			return -2;
 		}
 		if (temp) {
-			DBG_PRINT("data:%d:data:%d\n",temp->data, temp->data);
+			DBG_PRINT("data:%d:data:%d\n",temp->data.data, temp->data.data);
 			temp_free = temp->next;
 			if (temp->next) {
 				temp->next = temp->next->next;
@@ -266,7 +266,7 @@ int print_list(double_ll_t *head, int pos)
 	}
 	DATA_PRINT("--------------------------------------------\n");
 	while (temp) {
-		DATA_PRINT("| %d |",temp->data);
+		DATA_PRINT("| %d |",temp->data.data);
 		if (pos == 1) {
 			temp = temp->next;
 		} else {
@@ -349,7 +349,7 @@ int find_middle_node(double_ll_t *head, double_ll_t **temp)
 		temp_2_move = temp_2_move->next->next;
 	}
 	(*temp) = temp_1_move;
-	DBG_PRINT("middle node:%d\n",(*temp)->data);
+	DBG_PRINT("middle node:%d\n",(*temp)->data.data);
 	return 0;
 }
 
@@ -410,7 +410,7 @@ int check_loop(double_ll_t *head, double_ll_t **temp)
                         }
                 }while ((*temp) != head);
                 if ((*temp) == head) {
-                        DBG_PRINT("LOOP FOUND.%d:%d\n",(*temp)->data,head->data);
+                        DBG_PRINT("LOOP FOUND.%d:%d\n",(*temp)->data.data,head->data.data);
                         head = head_bak;
                         while (head) {
                                 head = head->next;

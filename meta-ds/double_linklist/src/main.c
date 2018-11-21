@@ -11,6 +11,7 @@ int main()
 	int ret = -1;
 	double_ll_t *head = NULL;
 	double_ll_t *temp = NULL;
+	struct Data  val;
 	int data;
 	int node;
 
@@ -23,17 +24,17 @@ int main()
 		switch (choice) {
 		case 1:
 			printf("Enter data:");
-			scanf("%d",&data);
+			scanf("%d",&val.data);
 			ret = traverse_list(head, -1, &temp);
 			printf("======>main in tarverse:%d\n",ret);
 			if (ret == -1) {
-				ret = insert_last(&head, data);
+				ret = insert_last(&head, val);
 				if (ret == 0) {
 					temp = head;
 					printf("Insert fast node and update temp\n");
 				}
 			} else {
-				ret = insert_last(&temp, data);
+				ret = insert_last(&temp, val);
 			}
 			printf("=======>main in last insert:%d\n",ret);
 			break;
@@ -46,8 +47,8 @@ int main()
 			break;
 		case 3:
 			printf("Enter data");
-			scanf("%d",&data);
-			ret = insert_fast(&head, data);
+			scanf("%d",&val.data);
+			ret = insert_fast(&head, val);
 			if (ret < 0) {
 				printf("Err ret insert_fast():%d\n",ret);
 			} else {
@@ -57,8 +58,8 @@ int main()
 			break;
 		case 4:
 			printf("Enter data and node:");
-			scanf("%d%d",&data,&node);
-			ret = insert_middle(head,node-1,data);
+			scanf("%d%d",&val.data,&node);
+			ret = insert_middle(head,node-1,val);
 			if (ret == 0 && ret == 1) {
 				printf("Function success\n");
 			} else {
@@ -97,7 +98,7 @@ int main()
 				printf("main error in find_middle_node()\n");
 				break;
 			} else {
-				printf("MIDDLE NODE:%d\n",temp->data);
+				printf("MIDDLE NODE:%d\n",temp->data.data);
 				break;
 			}
 		case 0:

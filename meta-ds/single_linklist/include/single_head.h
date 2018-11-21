@@ -8,9 +8,14 @@
 #include <string.h>
 #include <unistd.h>
 
-typedef struct single_ll
+struct Data
 {
 	int data;
+};
+
+typedef struct single_ll
+{
+	struct Data data;
 	struct single_ll *next;
 }single_ll_t;
 
@@ -29,12 +34,12 @@ typedef enum error_t {
 	NULL_POINTER, 
 }err_t;
 
-int insert_last(single_ll_t **, int);
+int insert_last(single_ll_t **, struct Data);
 int print_list(single_ll_t *);
 int traverse_list(single_ll_t *, int, single_ll_t **);
-int insert_fast(single_ll_t **, int);
+int insert_fast(single_ll_t **, struct Data);
 void exist_list(single_ll_t **);
-int insert_middle(single_ll_t *, int, int);
+int insert_middle(single_ll_t *, int, struct Data);
 int del_list(single_ll_t **head, int node_idx, int pos);
 void exist_list(single_ll_t **);
 int find_node_from_last(single_ll_t *temp, int node, single_ll_t **temp_last);
