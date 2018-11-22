@@ -47,3 +47,5 @@ int swap_adjusent_node(single_ll_t **, int);
 int find_middle_node(single_ll_t *, single_ll_t **);
 int create_loop(single_ll_t *head, int, int);
 int check_loop(single_ll_t *, single_ll_t **);
+int find_len(single_ll_t *);
+int reverse_list(single_ll_t **);

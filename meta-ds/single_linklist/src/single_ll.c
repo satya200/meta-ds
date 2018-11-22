@@ -428,6 +428,62 @@ int check_loop(single_ll_t *head, single_ll_t **temp)
 	return 0;
 }
 
+int find_len(single_ll_t *head)
+{
+	int ret = -1,
+	    cnt = -11;
+	single_ll_t *temp = head,
+		     *temp_speed = head;
+
+	if (!(head)) {
+		ret = -1;
+	} else {
+		cnt = 1;
+		while(temp_speed) {
+			if (temp_speed->next) {
+				if (temp->next->next) {
+					temp_speed = temp_speed->next->next;
+				}
+				if (temp_speed == NULL) {
+					cnt = cnt + 1;
+				} else {
+					cnt = cnt + 2;
+				}
+			} else {
+				break;
+			}
+		}
+	}
+	ret = cnt;
+	return ret;
+}
+
+int reverse_list(single_ll_t **head)
+{
+	int ret = -1;
+	single_ll_t *temp = NULL;
+	single_ll_t *temp_next = NULL;
+
+	if (head == NULL && (*head) == NULL) {
+		DBG_PRINT("NULL pointer\n");
+		return -ret;
+	}
+	if ((*head)->next == NULL) {
+		DBG_PRINT("OMLY ONE NODE PRESENT\n");
+		return 0;
+	}
+	while ((*head)) {
+		temp_next = (*head)->next;
+		(*head)->next = temp;
+		temp = (*head);
+		if (temp_next != NULL)
+			(*head) = temp_next;
+		else
+			break;
+	}
+	return 0;
+}
+
 void exist_list(single_ll_t **head)
 {
 	single_ll_t *temp = NULL;

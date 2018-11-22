@@ -19,7 +19,7 @@ int main()
 	while(1) {
 		printf("PLEASE ENTER UR CHOICE:\n");
 		printf("0: Total App Exit\n1: for inser last\n2: for print all\n3: insert fast\n4: insert middle\n\
-5: Delete node\n6: Swap 2 adj node\n7: Find Middle Node\n8: check loop\n9: create loop\n");
+5: Delete node\n6: Swap 2 adj node\n7: Find Middle Node\n8: check loop\n9: create loop\n10: Find length\n11: reverse\n");
 		scanf("%d",&choice);
 		switch (choice) {
 		case 1:
@@ -123,6 +123,19 @@ int main()
 				printf("loop created.\n");
 			} else {
 				printf("Loop not created\n");
+			}
+			break;
+		case 10:
+			printf("FInding Length:");
+			ret = find_len(head);
+			printf("Length of List:%d\n",ret);
+			break;
+		case 11:
+			ret = reverse_list(&head);
+			if (ret == 0) {
+				printf("Reverse Done\n");
+			} else {
+				printf("Error in Rev\n");
 			}
 			break;
 		case 0:
