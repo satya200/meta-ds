@@ -1,16 +1,24 @@
-/*
-* AUTHOR: Satya Sundar Sahu
-* mail id:- tinkusahu.com@gmail.com
-*/
-
 #include <double_head.h>
 
 FILE *log_fp = NULL;
 
-int insert_last(double_ll_t **head, struct Data data)
+double_ll_t *get_exor(double_ll_t *temp, double_ll_t *temp1)
+{
+	long unsigned int t1, t2;
+
+	t1 = (long unsigned int)temp;
+	t2 = (long unsigned int)temp1;
+
+	return ((double_ll_t *)(t1 ^ t2));
+}
+
+
+int insert_last(double_ll_t **head, int data)
 {
 	log_fp = stdout;
 	double_ll_t *new_node = NULL;
+	double_ll_t *temp = NULL;
+	int ret = -1;
 
 	if (head == NULL) {
 		ERR_PRINT("%s:%d :head value is NULL\n",__FUNCTION__,__LINE__);
@@ -24,15 +32,15 @@ int insert_last(double_ll_t **head, struct Data data)
 			return -2;
 		}
 		(*head)->next = NULL;
-		(*head)->prev = NULL;
-		memcpy(&((*head)->data), &data, sizeof(data));
+		//(*head)->prev = NULL;
+		(*head)->data = data;
 		
 	} else {
 		DBG_PRINT("%s:Insert last node\n",__FUNCTION__);
-
-		if ((*head)->next != NULL) {
-			ERR_PRINT("head not in last node. Please send last node address\n");
-			return -3;
+		ret = traverse_list((*head), -1, &temp);
+		if (ret == -1) {
+			ERR_PRINT("error in traverse_list() ret\n");
+			return -1;
 		}
 
 		new_node = malloc(sizeof(double_ll_t));
@@ -40,20 +48,22 @@ int insert_last(double_ll_t **head, struct Data data)
 			ERR_PRINT("%s:%d malloc fail\n",__FUNCTION__,__LINE__);
 			return -2;
 		} else {
-			new_node->next = NULL;
-			new_node->prev = (*head);
-			memcpy(&(new_node->data), &data, sizeof(data));
-			(*head)->next = new_node;
+			new_node->next = temp;
+			//new_node->prev = (*head);
+			new_node->data = data;
+			//(*head)->next = new_node;
+			temp->next = get_exor(temp->next, new_node);
 			
 		}
 	}
 	return 0;
 }
 
-int insert_fast(double_ll_t **head, struct Data data)
+int insert_fast(double_ll_t **head, int data)
 {
 	log_fp = stdout;
 	double_ll_t *new_node = NULL;
+	//long unsigned int t1, t2;
 
 	if (head == NULL) {
 		ERR_PRINT("%s:%d :head value is NULL\n",__FUNCTION__,__LINE__);
@@ -68,18 +78,20 @@ int insert_fast(double_ll_t **head, struct Data data)
 			return -2;
 		}
 		(*head)->next = NULL;
-		(*head)->prev = NULL;
-		memcpy(&((*head)->data), &data, sizeof(data));
+		(*head)->data = data;
 	} else {
 		new_node = malloc(sizeof(double_ll_t));
 		if (new_node == NULL) {
 			ERR_PRINT("%s:%d: malloc fail\n",__FUNCTION__,__LINE__);
 			return -2;
 		}
-		memcpy(&(new_node->data), &data, sizeof(data));
-		new_node->prev = NULL;
+		new_node->data = data;
 		new_node->next = (*head);
-		(*head)->prev = new_node;
+		//t1 = (long unsigned int)new_node;
+		//t2 = (long unsigned int)(*head)->next;
+		//(*head)->next = ((new_node) ^ ((*head)->next));
+		//(*head)->next = (double_ll_t *)(t1 ^ t2);
+		(*head)->next = (double_ll_t *)get_exor(new_node, (*head)->next);
 		(*head) = new_node;
 	}
 	return 0;
@@ -90,7 +102,7 @@ int insert_sort()
 	return 0;
 }
 
-int insert_middle(double_ll_t *head, int node, struct Data data)
+int insert_middle(double_ll_t *head, int node, int data)
 {
 	int ret = -1;
 	double_ll_t *temp = NULL,
@@ -124,10 +136,10 @@ int insert_middle(double_ll_t *head, int node, struct Data data)
 		return -2;
 	}
 
-	memcpy(&(new_node->data), &data, sizeof(data));
+	new_node->data = data;
 	new_node->next = temp->next;
-	new_node->prev = temp;
-	temp->next->prev = new_node;
+	//new_node->prev = temp;
+	//temp->next->prev = new_node;
 	temp->next = new_node;
 
 	return 0;
@@ -135,6 +147,8 @@ int insert_middle(double_ll_t *head, int node, struct Data data)
 
 int traverse_list(double_ll_t *temp, int node_cnt, double_ll_t **temp_last)
 {
+	double_ll_t *temp_next = NULL;
+
 	if (temp == NULL || temp_last == NULL) {
 		ERR_PRINT("%s:%dParameter NULL\n",__FUNCTION__,__LINE__);
 		return -1;
@@ -143,16 +157,23 @@ int traverse_list(double_ll_t *temp, int node_cnt, double_ll_t **temp_last)
 
 	if (node_cnt == -1) {
 		DBG_PRINT("FULL TRAVERSE\n");
-		while (temp->next) {
+		if ((*temp_last) == temp) {
 			temp = temp->next;
 		}
+		while (temp) {
+			//temp = temp->next;
+			temp_next = (double_ll_t *)get_exor((*temp_last), temp->next);
+			(*temp_last) = temp;
+			temp = temp_next;
+		}
+		return 0;
 	}
 	if (node_cnt == 0) {
 		DBG_PRINT("Giving 1st node\n");
 		return 0;
 		
 	}
-	while(node_cnt--) {
+	while((node_cnt > 0) && (node_cnt--)) {
 		if (temp->next) {
 			temp = temp->next;
 		} else {
@@ -163,7 +184,7 @@ int traverse_list(double_ll_t *temp, int node_cnt, double_ll_t **temp_last)
 	}
 	if (*temp_last) {
 		(*temp_last) = temp;
-		DBG_PRINT("In trav:%d:data:%d\n",(*temp_last)->data.data, temp->data.data);
+		DBG_PRINT("In trav:%d:data:%d\n",(*temp_last)->data, temp->data);
 	} else {
 		ERR_PRINT("Error in Trav\n");
 		return -1;
@@ -190,7 +211,7 @@ int del_list(double_ll_t **head, int node_idx, int pos)
 			return 0;
 		}
 		(*head) = (*head)->next;
-		(*head)->prev = NULL;
+		//(*head)->prev = NULL;
 		free(temp);
 		temp = NULL;
 		
@@ -202,7 +223,7 @@ int del_list(double_ll_t **head, int node_idx, int pos)
 			return -2;
 		}
 		if (temp) {
-			DBG_PRINT("last node:%d\n",temp->data.data);
+			DBG_PRINT("last node:%d\n",temp->data);
 			if (temp->next == NULL) {
 				free(temp);
 				*head = NULL;
@@ -221,11 +242,11 @@ int del_list(double_ll_t **head, int node_idx, int pos)
 			return -2;
 		}
 		if (temp) {
-			DBG_PRINT("data:%d:data:%d\n",temp->data.data, temp->data.data);
+			DBG_PRINT("data:%d:data:%d\n",temp->data, temp->data);
 			temp_free = temp->next;
 			if (temp->next) {
 				temp->next = temp->next->next;
-				temp->next->prev = temp;
+				//temp->next->prev = temp;
 			}
 			if (temp_free) {
 				free(temp_free);
@@ -247,10 +268,12 @@ int rev_list()
 int print_list(double_ll_t *head, int pos)
 {
 	double_ll_t *temp = NULL;
+	double_ll_t *temp_next = NULL;
+	//long unsigned int t1, t2;
 	int print_cnt = 1;
 	int ret = -1;
 
-	if (head == NULL && pos > 0) {
+	if ((head == NULL) && (pos > 0)) {
 		ERR_PRINT("List is Empty.or invalid position\n");
 		return -3;
 	}
@@ -260,17 +283,35 @@ int print_list(double_ll_t *head, int pos)
 			ERR_PRINT("In traverse_list() ret\n");
 			return -2;
 		}
+		head = temp;
 	} else {
 		DBG_PRINT("In fwd print\n");
 		temp = head;
 	}
 	DATA_PRINT("--------------------------------------------\n");
 	while (temp) {
-		DATA_PRINT("| %d |",temp->data.data);
-		if (pos == 1) {
-			temp = temp->next;
+		if ((temp != head) || (temp->next == NULL))
+			DATA_PRINT("| %d |",temp->data);
+		if (pos == 1 || pos == 2) {
+			if (head == temp) {
+				head = head->next;
+				if (head == NULL)
+					break;
+			} else {
+				/*t1 = (long unsigned int)temp;
+				if (head ) {
+					t2 = (long unsigned int)head->next;
+				} else {
+					break;
+				}*/
+				if (head == NULL)
+					break;
+				temp_next = get_exor(temp, head->next);
+				temp = head;
+				head = temp_next;
+			}
 		} else {
-			temp = temp->prev;
+			//temp = temp->prev;
 		}
 		if (print_cnt == 8) {
 			//DATA_PRINT("\n");
@@ -301,11 +342,11 @@ int swap_adjusent_node(double_ll_t **head, int node_idx)
 		temp_prev = (*head);
 		temp = temp_prev->next;
 		temp_prev->next = temp->next;
-		temp_prev->next->prev = temp_prev;
-		temp_prev->prev = temp;
+		//temp_prev->next->prev = temp_prev;
+		//temp_prev->prev = temp;
 		temp->next = temp_prev;
 		(*head) = temp;
-		(*head)->prev = NULL;
+		//(*head)->prev = NULL;
 	} else if (node_idx-1 > 0) {
 		ret = traverse_list(*head, node_idx - 2, &temp_prev);
 		if (ret < 0) {
@@ -318,12 +359,12 @@ int swap_adjusent_node(double_ll_t **head, int node_idx)
 		}
 		temp = temp_prev->next;
 		temp_prev->next = temp->next;
-		temp_prev->next->prev = temp_prev;
+		//temp_prev->next->prev = temp_prev;
 		temp->next = temp_prev->next->next;
 		if (temp->next) {
-			temp->next->prev = temp;
+			//temp->next->prev = temp;
 		}
-		temp->prev = temp_prev->next;
+		//temp->prev = temp_prev->next;
 		temp_prev->next->next = temp;
 	} 
 	return 0;
@@ -349,7 +390,7 @@ int find_middle_node(double_ll_t *head, double_ll_t **temp)
 		temp_2_move = temp_2_move->next->next;
 	}
 	(*temp) = temp_1_move;
-	DBG_PRINT("middle node:%d\n",(*temp)->data.data);
+	DBG_PRINT("middle node:%d\n",(*temp)->data);
 	return 0;
 }
 
@@ -386,54 +427,18 @@ int find_node_from_last(double_ll_t *temp, int node, double_ll_t **temp_last)
 	return 0;
 }
 
-int check_loop(double_ll_t *head, double_ll_t **temp)
-{
-        double_ll_t *head_bak = NULL;
-
-        if (head == NULL && temp == NULL) {
-                ERR_PRINT("NULL pointer\n");
-                return -1;
-        }
-        if (head->next == NULL) {
-                DBG_PRINT("Only one node.No loop\n");
-        } else {
-                head_bak = head;
-                (*temp) = head;
-                do {
-                        if ((*temp) && head && head->next) {
-                                (*temp) = (*temp)->next;
-                                head = head->next->next;
-
-                        } else {
-                                DBG_PRINT("check_loop():NO LOOP\n");
-                                break;
-                        }
-                }while ((*temp) != head);
-                if ((*temp) == head) {
-                        DBG_PRINT("LOOP FOUND.%d:%d\n",(*temp)->data.data,head->data.data);
-                        head = head_bak;
-                        while (head) {
-                                head = head->next;
-                                if ((*temp)->next == head) {
-                                        DBG_PRINT("LOOP START FOUND\n");
-                                        return -2;
-                                } else {
-                                        (*temp) = (*temp)->next;
-                                }
-                        }
-                }
-        }
-        return 0;
-}
-
 void exist_list(double_ll_t **head)
 {
 	double_ll_t *temp = NULL;
+	double_ll_t *temp_prev = NULL;
 	if (head && (*head)) {
 		DBG_PRINT("IN %s\n",__FUNCTION__);
 		while(*head) {
 			temp = (*head);
-			(*head) = (*head)->next;
+			//(*head) = (*head)->next;
+			(*head) = get_exor(temp_prev, (*head)->next);
+			//temp = (*head);
+			temp_prev = temp;
 			if (temp) {
 				free(temp);
 				temp = NULL;

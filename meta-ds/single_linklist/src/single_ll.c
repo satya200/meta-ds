@@ -7,7 +7,7 @@
 
 FILE *log_fp = NULL;
 
-int insert_last(single_ll_t **head, int data)
+int insert_last(single_ll_t **head, const struct Data data)
 {
 	log_fp = stdout;
 	single_ll_t *new_node = NULL;
@@ -18,13 +18,13 @@ int insert_last(single_ll_t **head, int data)
 	}
 	if (*head == NULL) {
 		DBG_PRINT("Fast Node insert\n");
-		(*head) = malloc(sizeof(single_ll_t));
+		(*head) = malloc(sizeof(single_ll_t)+8);
 		if (*head == NULL) {
 			ERR_PRINT("%s:%d: malloc fail\n",__FUNCTION__,__LINE__);
 			return -2;
 		}
 		(*head)->next = NULL;
-		(*head)->data = data;
+		memcpy(&((*head)->data), &data, sizeof(data));
 		
 	} else {
 		DBG_PRINT("%s:Insert last node\n",__FUNCTION__);
@@ -40,7 +40,7 @@ int insert_last(single_ll_t **head, int data)
 			return -2;
 		} else {
 			new_node->next = NULL;
-			new_node->data = data;
+			memcpy(&(new_node->data), &data, sizeof(data));
 			(*head)->next = new_node;
 			
 		}
@@ -48,7 +48,7 @@ int insert_last(single_ll_t **head, int data)
 	return 0;
 }
 
-int insert_fast(single_ll_t **head, int data)
+int insert_fast(single_ll_t **head, struct Data data)
 {
 	log_fp = stdout;
 	single_ll_t *new_node = NULL;
@@ -66,14 +66,14 @@ int insert_fast(single_ll_t **head, int data)
 			return -2;
 		}
 		(*head)->next = NULL;
-		(*head)->data = data;
+		memcpy(&((*head)->data), &data, sizeof(data));
 	} else {
 		new_node = malloc(sizeof(single_ll_t));
 		if (new_node == NULL) {
 			ERR_PRINT("%s:%d: malloc fail\n",__FUNCTION__,__LINE__);
 			return -2;
 		}
-		new_node->data = data;
+		memcpy(&(new_node->data), &data, sizeof(data));
 		new_node->next = (*head);
 		(*head) = new_node;
 	}
@@ -85,7 +85,7 @@ int insert_sort()
 	return 0;
 }
 
-int insert_middle(single_ll_t *head, int node, int data)
+int insert_middle(single_ll_t *head, int node, struct Data data)
 {
 	int ret = -1;
 	single_ll_t *temp = NULL,
@@ -119,7 +119,7 @@ int insert_middle(single_ll_t *head, int node, int data)
 		return -2;
 	}
 
-	new_node->data = data;
+	memcpy(&(new_node->data), &data, sizeof(data));
 	new_node->next = temp->next;
 	temp->next = new_node;
 
@@ -156,7 +156,7 @@ int traverse_list(single_ll_t *temp, int node_cnt, single_ll_t **temp_last)
 	}
 	if (*temp_last) {
 		(*temp_last) = temp;
-		DBG_PRINT("In trav:%d:data:%d\n",(*temp_last)->data, temp->data);
+		DBG_PRINT("In trav:%d:data:%d\n",(*temp_last)->data.data, temp->data.data);
 	} else {
 		ERR_PRINT("Error in Trav\n");
 		return -1;
@@ -195,7 +195,7 @@ int del_list(single_ll_t **head, int node_idx, int pos)
 			return -2;
 		}
 		if (temp) {
-			DBG_PRINT("last node:%d\n",temp->data);
+			DBG_PRINT("last node:%d\n",temp->data.data);
 			if (temp->next == NULL) {
                                 free(temp);
                                 *head = NULL;
@@ -214,7 +214,7 @@ int del_list(single_ll_t **head, int node_idx, int pos)
 			return -2;
 		}
 		if (temp) {
-			DBG_PRINT("data:%d:data:%d\n",temp->data, temp->data);
+			DBG_PRINT("data:%d:data:%d\n",temp->data.data, temp->data.data);
 			temp_free = temp->next;
 			if (temp->next) {
 				temp->next = temp->next->next;
@@ -248,7 +248,9 @@ int print_list(single_ll_t *head)
 	temp = head;
 	DATA_PRINT("--------------------------------------------\n");
 	while (temp) {
-		DATA_PRINT("| %d |",temp->data);
+		//sleep(1); Use for Testing
+		DATA_PRINT("| %d |",temp->data.data);
+		fflush(stdout);
 		temp = temp->next;
 		if (print_cnt == 8) {
 			//DATA_PRINT("\n");
@@ -319,7 +321,7 @@ int find_middle_node(single_ll_t *head, single_ll_t **temp)
 		temp_2_move = temp_2_move->next->next;
 	}
 	(*temp) = temp_1_move;
-	DBG_PRINT("middle node:%d\n",(*temp)->data);
+	DBG_PRINT("middle node:%d\n",(*temp)->data.data);
 	return 0;
 }
 
@@ -352,6 +354,132 @@ int find_node_from_last(single_ll_t *temp, int node, single_ll_t **temp_last)
 	} else {
 		DBG_PRINT("PLEASE USE traverse_list() to get last node\n");
 		return -3;
+	}
+	return 0;
+}
+
+int create_loop(single_ll_t *head, int start, int end)
+{
+	single_ll_t *temp = NULL,
+		   *temp1 = NULL;;
+
+	if ((head != NULL) && (start > 1) && (end > 1) && (start > end)) {
+		temp = head;
+		start--;
+		end--;
+		while (start) {
+			if (temp) {
+				temp = temp->next;
+				if (end == 1)
+					temp1 = temp;
+				start--;
+				end--;
+				
+			} else {
+				return -1;
+			}
+		}
+		temp->next = temp1;
+		DBG_PRINT("LOOP CREATED\n");
+	} else {
+		printf("Not valid input\n");
+		return -1;
+	}
+	return 0;
+}
+
+int check_loop(single_ll_t *head, single_ll_t **temp)
+{
+	single_ll_t *head_bak = NULL;
+
+	if (head == NULL && temp == NULL) {
+		ERR_PRINT("NULL pointer\n");
+		return -1;
+	}
+	if (head->next == NULL) {
+		DBG_PRINT("Only one node.No loop\n");
+	} else {
+		head_bak = head;
+		(*temp) = head;
+		do {
+			if ((*temp) && head && head->next) {
+				(*temp) = (*temp)->next;
+				head = head->next->next;
+				
+			} else {
+				DBG_PRINT("check_loop():NO LOOP\n");
+				break;
+			}
+		}while ((*temp) != head);
+		if ((*temp) == head) {
+			DBG_PRINT("LOOP FOUND.%d:%d\n",(*temp)->data.data,head->data.data);
+			head = head_bak;
+			while (head) {
+				head = head->next;
+				if ((*temp)->next == head) {
+					DBG_PRINT("LOOP START FOUND\n");
+					return -2;
+				} else {
+					(*temp) = (*temp)->next;
+				}
+			}
+		}
+	}
+	return 0;
+}
+
+int find_len(single_ll_t *head)
+{
+	int ret = -1,
+	    cnt = -11;
+	single_ll_t *temp = head,
+		     *temp_speed = head;
+
+	if (!(head)) {
+		ret = -1;
+	} else {
+		cnt = 1;
+		while(temp_speed) {
+			if (temp_speed->next) {
+				if (temp->next->next) {
+					temp_speed = temp_speed->next->next;
+				}
+				if (temp_speed == NULL) {
+					cnt = cnt + 1;
+				} else {
+					cnt = cnt + 2;
+				}
+			} else {
+				break;
+			}
+		}
+	}
+	ret = cnt;
+	return ret;
+}
+
+int reverse_list(single_ll_t **head)
+{
+	int ret = -1;
+	single_ll_t *temp = NULL;
+	single_ll_t *temp_next = NULL;
+
+	if (head == NULL && (*head) == NULL) {
+		DBG_PRINT("NULL pointer\n");
+		return -ret;
+	}
+	if ((*head)->next == NULL) {
+		DBG_PRINT("OMLY ONE NODE PRESENT\n");
+		return 0;
+	}
+	while ((*head)) {
+		temp_next = (*head)->next;
+		(*head)->next = temp;
+		temp = (*head);
+		if (temp_next != NULL)
+			(*head) = temp_next;
+		else
+			break;
 	}
 	return 0;
 }

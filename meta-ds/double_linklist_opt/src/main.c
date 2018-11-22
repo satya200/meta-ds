@@ -1,17 +1,11 @@
-/*
-* AUTHOR: Satya Sundar Sahu
-* mail id:- tinkusahu.com@gmail.com
-*/
-
-#include <single_head.h>
+#include <double_head.h>
 
 int main()
 {
 	int choice;
 	int ret = -1;
-	single_ll_t *head = NULL;
-	single_ll_t *temp = NULL;
-	struct Data val;
+	double_ll_t *head = NULL;
+	double_ll_t *temp = NULL;
 	int data;
 	int node;
 
@@ -19,44 +13,49 @@ int main()
 	while(1) {
 		printf("PLEASE ENTER UR CHOICE:\n");
 		printf("0: Total App Exit\n1: for inser last\n2: for print all\n3: insert fast\n4: insert middle\n\
-5: Delete node\n6: Swap 2 adj node\n7: Find Middle Node\n8: check loop\n9: create loop\n10: Find length\n11: reverse\n");
+5: Delete node\n6: Swap 2 adj node\n7: Find Middle Node\n");
 		scanf("%d",&choice);
 		switch (choice) {
 		case 1:
 			printf("Enter data:");
-			scanf("%d",&val.data);
-			ret = traverse_list(head, -1, &temp);
+			scanf("%d",&data);
+			temp = head;
+			/*ret = traverse_list(head, -1, &temp);
 			printf("======>main in tarverse:%d\n",ret);
 			if (ret == -1) {
-				ret = insert_last(&head, val);
+				ret = insert_last(&head, data);
 				if (ret == 0) {
 					temp = head;
 					printf("Insert fast node and update temp\n");
 				}
 			} else {
-				ret = insert_last(&temp, val);
-			}
+				ret = insert_last(&temp, data);
+			}*/
+			ret = insert_last(&head, data);
 			printf("=======>main in last insert:%d\n",ret);
 			break;
 		case 2:
-			ret = print_list(head);
+			ret = print_list(head, 1);
+			printf("in print:%d\n",ret);
+			printf("==========================================\n");
+			ret = print_list(head, 2);
 			printf("in print:%d\n",ret);
 			break;
 		case 3:
 			printf("Enter data");
-			scanf("%d",&val.data);
-			ret = insert_fast(&head, val);
+			scanf("%d",&data);
+			ret = insert_fast(&head, data);
 			if (ret < 0) {
 				printf("Err ret insert_fast():%d\n",ret);
 			} else {
 				temp = head;
-				printf("success insert_fast() and temp update\n");
+				printf("success insert_fast() and temp update:%d\n",head->data);
 			}
 			break;
 		case 4:
 			printf("Enter data and node:");
-			scanf("%d%d",&val.data,&node);
-			ret = insert_middle(head,node,val);
+			scanf("%d%d",&data,&node);
+			ret = insert_middle(head,node-1,data);
 			if (ret == 0 && ret == 1) {
 				printf("Function success\n");
 			} else {
@@ -95,49 +94,9 @@ int main()
 				printf("main error in find_middle_node()\n");
 				break;
 			} else {
-				printf("MIDDLE NODE:%d\n",temp->data.data);
+				printf("MIDDLE NODE:%d\n",temp->data);
 				break;
 			}
-		case 8:
-			ret = check_loop(head, &temp);
-			if (ret == -1) {
-				printf("NULL pointer\n");
-			} else if (ret == -2) {
-				printf("Loop found\n");
-				if (temp) {
-					printf("Start point:%d\n",temp->data.data);
-				} else {
-					printf("Starting point not avl in temp\n");
-				}
-			} else if (ret == 0) {
-				printf("NO LOOP\n");
-			} else {
-				printf("Invalid return value\n");
-			}
-			break;
-		case 9:
-			printf("Enter start and end\n");
-			scanf("%d%d",&data,&node);
-			ret = create_loop(head, data, node);
-			if (ret == 0) {
-				printf("loop created.\n");
-			} else {
-				printf("Loop not created\n");
-			}
-			break;
-		case 10:
-			printf("FInding Length:");
-			ret = find_len(head);
-			printf("Length of List:%d\n",ret);
-			break;
-		case 11:
-			ret = reverse_list(&head);
-			if (ret == 0) {
-				printf("Reverse Done\n");
-			} else {
-				printf("Error in Rev\n");
-			}
-			break;
 		case 0:
 			exist_list(&head);
 			return 0;

@@ -1,22 +1,11 @@
-/*
-* AUTHOR: Satya Sundar Sahu
-* mail id:- tinkusahu.com@gmail.com
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-struct Data
-{
-	int data;
-};
-
 typedef struct double_ll
 {
-	struct Data data;
+	int data;
 	struct double_ll *next;
-	struct double_ll *prev;
 }double_ll_t;
 
 #define   DBG_PRINT(fmt, args...) \
@@ -34,15 +23,14 @@ typedef enum error_t {
 	NULL_POINTER, 
 }err_t;
 
-int insert_last(double_ll_t **, struct Data);
+int insert_last(double_ll_t **, int);
 int print_list(double_ll_t *, int);
 int traverse_list(double_ll_t *, int, double_ll_t **);
-int insert_fast(double_ll_t **, struct Data);
+int insert_fast(double_ll_t **, int);
 void exist_list(double_ll_t **);
-int insert_middle(double_ll_t *, int, struct Data);
+int insert_middle(double_ll_t *, int, int);
 int del_list(double_ll_t **head, int node_idx, int pos);
 void exist_list(double_ll_t **);
 int find_node_from_last(double_ll_t *temp, int node, double_ll_t **temp_last);
 int swap_adjusent_node(double_ll_t **, int);
 int find_middle_node(double_ll_t *, double_ll_t **);
-int check_loop(double_ll_t *, double_ll_t **);
