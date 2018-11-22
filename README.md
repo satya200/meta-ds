@@ -11,3 +11,7 @@ This repo contains all data structures program.
 	This Folder contains optimize double linked list
 	This is implemented using single self referncial
 	pointer using exor to find out next node.
+
+4. Steps To Build
+	Just Give make inside mest-ds Directory. All binarys are
+	created inside meta-ds/<respective> Folder
