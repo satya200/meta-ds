@@ -1,4 +1,28 @@
+STEPS TO COMMIT CHANGES:
+---------------------------
+
+1> 1st update your branch from develop
+
+2> Do the changes
+
+3> After verify your changes by using below command
+	git diff
+
+4> If it is ok check status by "git status" command
+
+5> If you want to add all your changes use
+	git add .
+
+6> Use "git commit -S -v" to commit your changes
+
+7> USE BELOW COMMAND TO PUSH YOUR CHANGES TO YOUR OWN BRANCH
+   NOTE:- DON'T PUSH TO DEVELOP OR MASTER BRANCH
+	git push -u orgin <ur branch>
+   Example:-
+	git push -u orgin sumit-dev
+
 # meta-ds
+-----------
 This repo contains all data structures program.
 
 1. Folder single_linklist
@@ -13,6 +37,7 @@ This repo contains all data structures program.
 	pointer using exor to find out next node.
 
 4. Folder stack
+	This Folder Contains Stack implementation
 
 
 5. Steps To Build
