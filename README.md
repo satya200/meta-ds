@@ -12,6 +12,9 @@ This repo contains all data structures program.
 	This is implemented using single self referncial
 	pointer using exor to find out next node.
 
-4. Steps To Build
+4. Folder stack
+
+
+5. Steps To Build
 	Just Give make inside mest-ds Directory. All binarys are
 	created inside meta-ds/<respective> Folder
