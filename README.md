@@ -13,7 +13,7 @@ STEPS TO COMMIT CHANGES:
 5> If you want to add all your changes use
 	git add .
 
-6> Use "git commit -S -v" to commit your changes
+6> Use "git commit -s -v" to commit your changes
 
 7> USE BELOW COMMAND TO PUSH YOUR CHANGES TO YOUR OWN BRANCH
    NOTE:- DON'T PUSH TO DEVELOP OR MASTER BRANCH
