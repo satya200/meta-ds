@@ -19,7 +19,7 @@ int main()
 	stack_data.stack_size = data;
 	ret = create_stack(&stack_data);
 	while (1) {
-		printf("1: For Push.\n2: For Pop\n3: print\n0: clear\n");
+		printf("1: For Push.\n2: For Pop\n3: print\n4: no of free space\n0: clear\n");
 		printf("Please enter opt:");
 		scanf("%d",&choice);
 
@@ -38,9 +38,9 @@ int main()
 				}
 				break;
 			case 2:
-				ret = stack_data.sop.pop();
+				ret = stack_data.sop.pop(&data1);
 				if (ret == 0) 
-					printf("success\n");
+					printf("success data:%d\n",data1.data);
 				else if (ret == 1) {
 					printf("UNDER-FLOW\n");
 				} else {
@@ -49,6 +49,9 @@ int main()
 				break;
 			case 3:
 				stack_data.sop.print_stack();
+				break;
+			case 4:
+				printf("free space: %d\n",stack_data.sop.free_space());
 				break;
 			case 0:
 				stack_data.sop.destroy_stack();
