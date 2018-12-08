@@ -6,7 +6,7 @@ Description:
 	stack implementation using array
 */
 
-#include <mystack.h>
+#include "mystack.h"
 
 int main()
 {

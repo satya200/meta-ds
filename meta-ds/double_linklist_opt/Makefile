@@ -12,7 +12,7 @@ LOCAL_IFLAGS = -I./include/
 LOCAL_CFLAGS = -fPIC -Wall -Werror ${LOCAL_IFLAGS}
 LOCAL_LFLAGS = 
 
-TARGET = double_linklist
+TARGET = double_linklist_opt
 
 # objects
 objs = src/main.o src/double_ll.o
@@ -26,12 +26,6 @@ ${TARGET}:${objs}
 
 .PHONY: install clean
 
-#install: 
-#	$(MKDIR) ${DESTDIR}${BIN_DIR}
-#	$(MKDIR) ${DESTDIR}${ETC_DIR}
-#	$(COPY) ${TARGET} ${DESTDIR}${BIN_DIR}
-#	$(MKDIR) ${DESTDIR}${INCLUDE_DIR}
-#	$(COPY) ./include/* ${DESTDIR}${INCLUDE_DIR}
 
 clean:
 	$(RM) ${objs} 

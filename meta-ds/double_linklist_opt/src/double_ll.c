@@ -1,6 +1,6 @@
 #include <double_head.h>
 
-FILE *log_fp = NULL;
+static FILE *log_fp = NULL;
 
 double_ll_t *get_exor(double_ll_t *temp, double_ll_t *temp1)
 {
@@ -13,7 +13,7 @@ double_ll_t *get_exor(double_ll_t *temp, double_ll_t *temp1)
 }
 
 
-int insert_last(double_ll_t **head, int data)
+int dlopt_insert_last(double_ll_t **head, int data)
 {
 	log_fp = stdout;
 	double_ll_t *new_node = NULL;
@@ -37,7 +37,7 @@ int insert_last(double_ll_t **head, int data)
 		
 	} else {
 		DBG_PRINT("%s:Insert last node\n",__FUNCTION__);
-		ret = traverse_list((*head), -1, &temp);
+		ret = dlopt_traverse_list((*head), -1, &temp);
 		if (ret == -1) {
 			ERR_PRINT("error in traverse_list() ret\n");
 			return -1;
@@ -59,7 +59,7 @@ int insert_last(double_ll_t **head, int data)
 	return 0;
 }
 
-int insert_fast(double_ll_t **head, int data)
+int dlopt_insert_fast(double_ll_t **head, int data)
 {
 	log_fp = stdout;
 	double_ll_t *new_node = NULL;
@@ -97,12 +97,12 @@ int insert_fast(double_ll_t **head, int data)
 	return 0;
 }
 
-int insert_sort()
+int dlopt_insert_sort()
 {
 	return 0;
 }
 
-int insert_middle(double_ll_t *head, int node, int data)
+int dlopt_insert_middle(double_ll_t *head, int node, int data)
 {
 	int ret = -1;
 	double_ll_t *temp = NULL,
@@ -115,7 +115,7 @@ int insert_middle(double_ll_t *head, int node, int data)
 	}
 	if (node > 1) {
 		temp = head;
-		ret = traverse_list(head, node - 1, &temp);
+		ret = dlopt_traverse_list(head, node - 1, &temp);
 		if (ret < 0) {
 			ERR_PRINT("error in traverse return\n");
 			return -3;
@@ -145,7 +145,7 @@ int insert_middle(double_ll_t *head, int node, int data)
 	return 0;
 }
 
-int traverse_list(double_ll_t *temp, int node_cnt, double_ll_t **temp_last)
+int dlopt_traverse_list(double_ll_t *temp, int node_cnt, double_ll_t **temp_last)
 {
 	double_ll_t *temp_next = NULL;
 
@@ -192,7 +192,7 @@ int traverse_list(double_ll_t *temp, int node_cnt, double_ll_t **temp_last)
 	return 0;
 }
 
-int del_list(double_ll_t **head, int node_idx, int pos)
+int dlopt_del_list(double_ll_t **head, int node_idx, int pos)
 {
 	double_ll_t *temp = NULL;
 	double_ll_t *temp_free = NULL;
@@ -217,7 +217,7 @@ int del_list(double_ll_t **head, int node_idx, int pos)
 		
 	} else if (pos == 2) {
 		DBG_PRINT("Going to delete last node\n");
-		ret = find_node_from_last(*head, 2, &temp);
+		ret = dlopt_find_node_from_last(*head, 2, &temp);
 		if (ret == -1) {
 			ERR_PRINT("%s:Ret error in traverse_list()\n",__FUNCTION__);
 			return -2;
@@ -236,7 +236,7 @@ int del_list(double_ll_t **head, int node_idx, int pos)
 		}
 	} else if (pos == 0 && node_idx > 0) {
 		DBG_PRINT("Going to delete randome node\n");
-		ret = traverse_list(*head, node_idx - 1, &temp);
+		ret = dlopt_traverse_list(*head, node_idx - 1, &temp);
 		if (ret == -1) {
 			ERR_PRINT("%s:Ret error in traverse_list()\n",__FUNCTION__);
 			return -2;
@@ -260,12 +260,12 @@ int del_list(double_ll_t **head, int node_idx, int pos)
 	return 0;
 }
 
-int rev_list()
+int dlopt_rev_list()
 {
 	return 0;
 }
 
-int print_list(double_ll_t *head, int pos)
+int dlopt_print_list(double_ll_t *head, int pos)
 {
 	double_ll_t *temp = NULL;
 	double_ll_t *temp_next = NULL;
@@ -278,7 +278,7 @@ int print_list(double_ll_t *head, int pos)
 		return -3;
 	}
 	if (pos == 2) {
-		ret = traverse_list(head, -1, &temp);
+		ret = dlopt_traverse_list(head, -1, &temp);
 		if (ret == -1) {
 			ERR_PRINT("In traverse_list() ret\n");
 			return -2;
@@ -324,7 +324,7 @@ int print_list(double_ll_t *head, int pos)
 	return 0;
 }
 
-int swap_adjusent_node(double_ll_t **head, int node_idx)
+int dlopt_swap_adjusent_node(double_ll_t **head, int node_idx)
 {
 	double_ll_t *temp = NULL;
 	double_ll_t *temp_prev = NULL;
@@ -348,7 +348,7 @@ int swap_adjusent_node(double_ll_t **head, int node_idx)
 		(*head) = temp;
 		//(*head)->prev = NULL;
 	} else if (node_idx-1 > 0) {
-		ret = traverse_list(*head, node_idx - 2, &temp_prev);
+		ret = dlopt_traverse_list(*head, node_idx - 2, &temp_prev);
 		if (ret < 0) {
 			ERR_PRINT("Error in traverse_list() ret\n");
 			return -2;
@@ -370,7 +370,7 @@ int swap_adjusent_node(double_ll_t **head, int node_idx)
 	return 0;
 }
 
-int find_middle_node(double_ll_t *head, double_ll_t **temp)
+int dlopt_find_middle_node(double_ll_t *head, double_ll_t **temp)
 {
 	double_ll_t *temp_1_move = NULL;
 	double_ll_t *temp_2_move = NULL;
@@ -394,12 +394,12 @@ int find_middle_node(double_ll_t *head, double_ll_t **temp)
 	return 0;
 }
 
-int find_loop()
+int dlopt_find_loop()
 {
 	return 0;
 }
 
-int find_node_from_last(double_ll_t *temp, int node, double_ll_t **temp_last)
+int dlopt_find_node_from_last(double_ll_t *temp, int node, double_ll_t **temp_last)
 {
 	if (temp == NULL || temp_last == NULL) {
 		ERR_PRINT("%s:%dParameter NULL\n",__FUNCTION__,__LINE__);
@@ -427,7 +427,7 @@ int find_node_from_last(double_ll_t *temp, int node, double_ll_t **temp_last)
 	return 0;
 }
 
-void exist_list(double_ll_t **head)
+void dlopt_exist_list(double_ll_t **head)
 {
 	double_ll_t *temp = NULL;
 	double_ll_t *temp_prev = NULL;
