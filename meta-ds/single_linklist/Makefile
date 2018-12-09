@@ -26,13 +26,6 @@ ${TARGET}:${objs}
 
 .PHONY: install clean
 
-#install: 
-#	$(MKDIR) ${DESTDIR}${BIN_DIR}
-#	$(MKDIR) ${DESTDIR}${ETC_DIR}
-#	$(COPY) ${TARGET} ${DESTDIR}${BIN_DIR}
-#	$(MKDIR) ${DESTDIR}${INCLUDE_DIR}
-#	$(COPY) ./include/* ${DESTDIR}${INCLUDE_DIR}
-
 clean:
 	$(RM) ${objs} 
 	$(RM) ${TARGET}

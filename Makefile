@@ -13,8 +13,8 @@ all:
 	$(MAKE) -C $(PWD)/meta-ds/double_linklist_opt/
 	$(MAKE) -C $(PWD)/meta-ds/stack/
 
-lib : ${SINGLE} ${STACK}  
-	${CC} -shared -o libsundar.so ${SINGLE} ${DOUBLE} ${DOUBLE_OPT} ${STACK} ${CFLAGS}
+lib : ${SINGLE} ${DOUBLE} ${DOUBLE_OPT} ${STACK}
+	${CC} -shared -o libDataStructure.so ${SINGLE} ${DOUBLE} ${DOUBLE_OPT} ${STACK} ${CFLAGS}
 
 clean:
 	$(MAKE) -C $(PWD)/meta-ds/single_linklist/ clean
