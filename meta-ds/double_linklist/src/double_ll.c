@@ -5,9 +5,9 @@
 
 #include <double_head.h>
 
-FILE *log_fp = NULL;
+static FILE *log_fp = NULL;
 
-int insert_last(double_ll_t **head, struct Data data)
+int dll_insert_last(double_ll_t **head, struct Data data)
 {
 	log_fp = stdout;
 	double_ll_t *new_node = NULL;
@@ -50,7 +50,7 @@ int insert_last(double_ll_t **head, struct Data data)
 	return 0;
 }
 
-int insert_fast(double_ll_t **head, struct Data data)
+int dll_insert_fast(double_ll_t **head, struct Data data)
 {
 	log_fp = stdout;
 	double_ll_t *new_node = NULL;
@@ -85,12 +85,13 @@ int insert_fast(double_ll_t **head, struct Data data)
 	return 0;
 }
 
-int insert_sort()
+int dll_insert_sort()
 {
+	/* TODO */
 	return 0;
 }
 
-int insert_middle(double_ll_t *head, int node, struct Data data)
+int dll_insert_middle(double_ll_t *head, int node, struct Data data)
 {
 	int ret = -1;
 	double_ll_t *temp = NULL,
@@ -103,7 +104,7 @@ int insert_middle(double_ll_t *head, int node, struct Data data)
 	}
 	if (node > 1) {
 		temp = head;
-		ret = traverse_list(head, node - 1, &temp);
+		ret = dll_traverse_list(head, node - 1, &temp);
 		if (ret < 0) {
 			ERR_PRINT("error in traverse return\n");
 			return -3;
@@ -133,7 +134,7 @@ int insert_middle(double_ll_t *head, int node, struct Data data)
 	return 0;
 }
 
-int traverse_list(double_ll_t *temp, int node_cnt, double_ll_t **temp_last)
+int dll_traverse_list(double_ll_t *temp, int node_cnt, double_ll_t **temp_last)
 {
 	if (temp == NULL || temp_last == NULL) {
 		ERR_PRINT("%s:%dParameter NULL\n",__FUNCTION__,__LINE__);
@@ -171,7 +172,7 @@ int traverse_list(double_ll_t *temp, int node_cnt, double_ll_t **temp_last)
 	return 0;
 }
 
-int del_list(double_ll_t **head, int node_idx, int pos)
+int dll_del_list(double_ll_t **head, int node_idx, int pos)
 {
 	double_ll_t *temp = NULL;
 	double_ll_t *temp_free = NULL;
@@ -196,7 +197,7 @@ int del_list(double_ll_t **head, int node_idx, int pos)
 		
 	} else if (pos == 2) {
 		DBG_PRINT("Going to delete last node\n");
-		ret = find_node_from_last(*head, 2, &temp);
+		ret = dll_find_node_from_last(*head, 2, &temp);
 		if (ret == -1) {
 			ERR_PRINT("%s:Ret error in traverse_list()\n",__FUNCTION__);
 			return -2;
@@ -215,7 +216,7 @@ int del_list(double_ll_t **head, int node_idx, int pos)
 		}
 	} else if (pos == 0 && node_idx > 0) {
 		DBG_PRINT("Going to delete randome node\n");
-		ret = traverse_list(*head, node_idx - 1, &temp);
+		ret = dll_traverse_list(*head, node_idx - 1, &temp);
 		if (ret == -1) {
 			ERR_PRINT("%s:Ret error in traverse_list()\n",__FUNCTION__);
 			return -2;
@@ -239,12 +240,13 @@ int del_list(double_ll_t **head, int node_idx, int pos)
 	return 0;
 }
 
-int rev_list()
+int dll_rev_list()
 {
+	/* TODO */
 	return 0;
 }
 
-int print_list(double_ll_t *head, int pos)
+int dll_print_list(double_ll_t *head, int pos)
 {
 	double_ll_t *temp = NULL;
 	int print_cnt = 1;
@@ -255,7 +257,7 @@ int print_list(double_ll_t *head, int pos)
 		return -3;
 	}
 	if (pos == 2) {
-		ret = traverse_list(head, -1, &temp);
+		ret = dll_traverse_list(head, -1, &temp);
 		if (ret == -1) {
 			ERR_PRINT("In traverse_list() ret\n");
 			return -2;
@@ -283,7 +285,7 @@ int print_list(double_ll_t *head, int pos)
 	return 0;
 }
 
-int swap_adjusent_node(double_ll_t **head, int node_idx)
+int dll_swap_adjusent_node(double_ll_t **head, int node_idx)
 {
 	double_ll_t *temp = NULL;
 	double_ll_t *temp_prev = NULL;
@@ -307,7 +309,7 @@ int swap_adjusent_node(double_ll_t **head, int node_idx)
 		(*head) = temp;
 		(*head)->prev = NULL;
 	} else if (node_idx-1 > 0) {
-		ret = traverse_list(*head, node_idx - 2, &temp_prev);
+		ret = dll_traverse_list(*head, node_idx - 2, &temp_prev);
 		if (ret < 0) {
 			ERR_PRINT("Error in traverse_list() ret\n");
 			return -2;
@@ -329,7 +331,7 @@ int swap_adjusent_node(double_ll_t **head, int node_idx)
 	return 0;
 }
 
-int find_middle_node(double_ll_t *head, double_ll_t **temp)
+int dll_find_middle_node(double_ll_t *head, double_ll_t **temp)
 {
 	double_ll_t *temp_1_move = NULL;
 	double_ll_t *temp_2_move = NULL;
@@ -353,12 +355,12 @@ int find_middle_node(double_ll_t *head, double_ll_t **temp)
 	return 0;
 }
 
-int find_loop()
+int dll_find_loop()
 {
 	return 0;
 }
 
-int find_node_from_last(double_ll_t *temp, int node, double_ll_t **temp_last)
+int dll_find_node_from_last(double_ll_t *temp, int node, double_ll_t **temp_last)
 {
 	if (temp == NULL || temp_last == NULL) {
 		ERR_PRINT("%s:%dParameter NULL\n",__FUNCTION__,__LINE__);
@@ -386,7 +388,7 @@ int find_node_from_last(double_ll_t *temp, int node, double_ll_t **temp_last)
 	return 0;
 }
 
-int check_loop(double_ll_t *head, double_ll_t **temp)
+int dll_check_loop(double_ll_t *head, double_ll_t **temp)
 {
         double_ll_t *head_bak = NULL;
 
@@ -426,7 +428,7 @@ int check_loop(double_ll_t *head, double_ll_t **temp)
         return 0;
 }
 
-void exist_list(double_ll_t **head)
+void dll_exist_list(double_ll_t **head)
 {
 	double_ll_t *temp = NULL;
 	if (head && (*head)) {

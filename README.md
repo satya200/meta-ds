@@ -43,3 +43,10 @@ This repo contains all data structures program.
 5. Steps To Build
 	Just Give make inside mest-ds Directory. All binarys are
 	created inside meta-ds/<respective> Folder
+	To Build lib:
+	---------------
+		1> make -> inside meta-ds folder
+		2> make lib -> Create shared lib in current folder
+		3> Put this Lib inside /usr/lib
+		4> Compile your App with "-lDataStructure"
+			Please refer application present inside respective module folder name app.c or main.c

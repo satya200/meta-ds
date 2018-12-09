@@ -5,7 +5,7 @@
 
 #include <single_head.h>
 
-FILE *log_fp = NULL;
+static FILE *log_fp = NULL;
 
 int insert_last(single_ll_t **head, const struct Data data)
 {
@@ -301,8 +301,16 @@ int swap_adjusent_node(single_ll_t **head, int node_idx)
 	return 0;
 }
 
+/*
+* find_middle_node():
+	This Finction will find out middle node.
+* @head: Starting Node
+* @temp: Out put Will Store Here 
+*/
+
 int find_middle_node(single_ll_t *head, single_ll_t **temp)
 {
+	int ret = 0;
 	single_ll_t *temp_1_move = NULL;
 	single_ll_t *temp_2_move = NULL;
 
@@ -317,17 +325,19 @@ int find_middle_node(single_ll_t *head, single_ll_t **temp)
 		return -3;
 	}
 	while (temp_2_move && (temp_2_move->next)) {
-		temp_1_move = temp_1_move->next;
+		/* The no of List is Even. So Middle Node not Present */
+		if (temp_2_move->next->next != NULL) {
+			temp_1_move = temp_1_move->next;
+		}
 		temp_2_move = temp_2_move->next->next;
+	}
+	if (temp_2_move == NULL) {
+		ERR_PRINT("List does not contains middle node\n");
+		ret = 1;
 	}
 	(*temp) = temp_1_move;
 	DBG_PRINT("middle node:%d\n",(*temp)->data.data);
-	return 0;
-}
-
-int find_loop()
-{
-	return 0;
+	return ret;
 }
 
 int find_node_from_last(single_ll_t *temp, int node, single_ll_t **temp_last)
@@ -469,7 +479,7 @@ int reverse_list(single_ll_t **head)
 		return -ret;
 	}
 	if ((*head)->next == NULL) {
-		DBG_PRINT("OMLY ONE NODE PRESENT\n");
+		DBG_PRINT("Only One Node Present\n");
 		return 0;
 	}
 	while ((*head)) {
@@ -498,4 +508,55 @@ void exist_list(single_ll_t **head)
 			}
 		}
 	}
+}
+
+int sl_check_palindrome(single_ll_t *head)
+{
+	int ret = -1;
+
+	single_ll_t *mid_node = NULL;
+	single_ll_t *rev_node = NULL;
+	single_ll_t *temp = NULL;
+
+	if (head == NULL) {
+		DBG_PRINT("Head is NULL. may be list is empty\n");
+		return -1;
+	}
+	ret = find_middle_node(head, &mid_node);
+	if (ret < 0) {
+		ERR_PRINT("Error in find_middle_node()\n");
+		return -1;
+	}
+	if (mid_node == NULL) {
+		ERR_PRINT("NULL in ret find_middle_node()\n");
+		return -1;
+	}
+	//DBG_PRINT("====>%d\n",mid_node->data.data);
+	rev_node = mid_node->next;
+	ret = reverse_list(&rev_node);
+	if (ret != 0) {
+		ERR_PRINT("Error in ret reverse_list()\n");
+		return -1;
+	}
+	//DBG_PRINT("rev===>%d\n",rev_node->data.data);
+	mid_node->next = rev_node;
+	mid_node = mid_node->next;
+	temp = head;
+	while (mid_node) {
+		if (temp->data.data == mid_node->data.data) {
+			temp = temp->next;
+			mid_node = mid_node->next;
+			continue;
+		} else {
+			break;
+		}
+	}
+	if (mid_node == NULL) {
+		DBG_PRINT("WARNNING: LIST DATA MODIFIED. CALL AGAIN THIS FUNCTION TO GET ORGINAL DATA\n");
+		ret = 0;
+	} else {
+		DBG_PRINT("WARNNING: LIST DATA MODIFIED. CALL AGAIN THIS FUNCTION TO GET ORGINAL DATA\n");
+		ret = 1;
+	}
+	return ret;
 }

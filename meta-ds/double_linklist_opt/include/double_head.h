@@ -23,14 +23,13 @@ typedef enum error_t {
 	NULL_POINTER, 
 }err_t;
 
-int insert_last(double_ll_t **, int);
-int print_list(double_ll_t *, int);
-int traverse_list(double_ll_t *, int, double_ll_t **);
-int insert_fast(double_ll_t **, int);
-void exist_list(double_ll_t **);
-int insert_middle(double_ll_t *, int, int);
-int del_list(double_ll_t **head, int node_idx, int pos);
-void exist_list(double_ll_t **);
-int find_node_from_last(double_ll_t *temp, int node, double_ll_t **temp_last);
-int swap_adjusent_node(double_ll_t **, int);
-int find_middle_node(double_ll_t *, double_ll_t **);
+int dlopt_insert_last(double_ll_t **, int);
+int dlopt_print_list(double_ll_t *, int);
+int dlopt_traverse_list(double_ll_t *, int, double_ll_t **);
+int dlopt_insert_fast(double_ll_t **, int);
+void dlopt_exist_list(double_ll_t **);
+int dlopt_insert_middle(double_ll_t *, int, int);
+int dlopt_del_list(double_ll_t **head, int node_idx, int pos);
+int dlopt_find_node_from_last(double_ll_t *temp, int node, double_ll_t **temp_last);
+int dlopt_swap_adjusent_node(double_ll_t **, int);
+int dlopt_find_middle_node(double_ll_t *, double_ll_t **);

@@ -31,20 +31,20 @@ int main()
 			} else {
 				ret = insert_last(&temp, data);
 			}*/
-			ret = insert_last(&head, data);
+			ret = dlopt_insert_last(&head, data);
 			printf("=======>main in last insert:%d\n",ret);
 			break;
 		case 2:
-			ret = print_list(head, 1);
+			ret = dlopt_print_list(head, 1);
 			printf("in print:%d\n",ret);
 			printf("==========================================\n");
-			ret = print_list(head, 2);
+			ret = dlopt_print_list(head, 2);
 			printf("in print:%d\n",ret);
 			break;
 		case 3:
 			printf("Enter data");
 			scanf("%d",&data);
-			ret = insert_fast(&head, data);
+			ret = dlopt_insert_fast(&head, data);
 			if (ret < 0) {
 				printf("Err ret insert_fast():%d\n",ret);
 			} else {
@@ -55,7 +55,7 @@ int main()
 		case 4:
 			printf("Enter data and node:");
 			scanf("%d%d",&data,&node);
-			ret = insert_middle(head,node-1,data);
+			ret = dlopt_insert_middle(head,node-1,data);
 			if (ret == 0 && ret == 1) {
 				printf("Function success\n");
 			} else {
@@ -67,7 +67,7 @@ int main()
 			scanf("%d",&node);
 			printf("Enter  position[0 -middle\n 1 - fast\n 2 - last\n] and node no\n");
 			scanf("%d",&data);
-			ret = del_list(&head, node - 1, data);
+			ret = dlopt_del_list(&head, node - 1, data);
 			if (ret == 0) {
 				printf("In main finc Delete success\n");
 			} else {
@@ -81,7 +81,7 @@ int main()
 				printf("Invalid parameter.It will be > 0\n");
 				break;
 			}
-			ret = swap_adjusent_node(&head, node);
+			ret = dlopt_swap_adjusent_node(&head, node);
 			if (ret == 0) {
 				printf("Swap node suucces\n");
 			} else {
@@ -89,7 +89,7 @@ int main()
 			}
 			break;
 		case 7:
-			ret = find_middle_node(head, &temp);
+			ret = dlopt_find_middle_node(head, &temp);
 			if (ret < 0) {
 				printf("main error in find_middle_node()\n");
 				break;
@@ -98,11 +98,11 @@ int main()
 				break;
 			}
 		case 0:
-			exist_list(&head);
+			dlopt_exist_list(&head);
 			return 0;
 			
 		default:
-			exist_list(&head);
+			dlopt_exist_list(&head);
 			break;
 		}
 	}
