@@ -39,8 +39,12 @@ This repo contains all data structures program.
 4. Folder stack
 	This Folder Contains Stack implementation
 
+5. Folder bst_tree
+	This Folder contains binary search tree.
 
-5. Steps To Build
+
+Steps To Build:
+----------------
 	Just Give make inside mest-ds Directory. All binarys are
 	created inside meta-ds/<respective> Folder
 	To Build lib:
