@@ -18,8 +18,9 @@ int main()
 	printf("WELCOME TO SINGLE LINKLIST DATA STRUCTURE\n");
 	while(1) {
 		printf("PLEASE ENTER UR CHOICE:\n");
-		printf("0: Total App Exit\n1: for inser last\n2: for print all\n3: insert fast\n4: insert middle\n\
-5: Delete node\n6: Swap 2 adj node\n7: Find Middle Node\n8: check loop\n9: create loop\n10: Find length\n11: reverse\n12: check palindrome\n");
+		printf("0: Total App Exit\n1: for insert last\n2: for print all\n3: insert fast\n4: insert middle\n\
+5: Delete node\n6: Swap 2 adj node\n7: Find Middle Node\n8: check loop\n9: create loop\n10: Find length\n11: reverse\n\
+12: check palindrome\n13: Swap any Node\n14: Find largest and Second largest data in list\n");
 		scanf("%d",&choice);
 		switch (choice) {
 		case 1:
@@ -147,6 +148,28 @@ int main()
 				printf("It is palindrome\n");
 			} else {
 				printf("It is not palindrome\n");
+			}
+			break;
+		case 13:
+			printf("Enter two node index to swap\n");
+			scanf("%d%d",&idx1,&idx2);
+			if (idx1 < 0 || idx2 < 0) {
+				printf("Invalid Index parameter.It will be > 0\n");
+				break;
+			}
+			ret = swap_node(&head, idx1, idx2);
+			if (ret == 0) {
+				printf("Swap node success\n");
+			} else {
+				printf("swap is failed\n");
+			}
+			break;
+		case 14:
+			ret = findLargest_secondLargest(head);
+			if (ret == 0) {
+				printf("Find largest Success\n");
+			} else {
+				printf("Find largest failed\n");
 			}
 			break;
 		case 0:

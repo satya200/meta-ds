@@ -50,3 +50,5 @@ int check_loop(single_ll_t *, single_ll_t **);
 int find_len(single_ll_t *);
 int reverse_list(single_ll_t **);
 int sl_check_palindrome(single_ll_t *head);
+int swap_node(single_ll_t **head, int pos1, int pos2);
+int findLargest_secondLargest(single_ll_t *head);
