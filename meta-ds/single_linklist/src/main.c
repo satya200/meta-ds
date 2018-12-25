@@ -14,6 +14,7 @@ int main()
 	struct Data val;
 	int data;
 	int node;
+	int idx1 = -1, idx2 = -1;
 
 	printf("WELCOME TO SINGLE LINKLIST DATA STRUCTURE\n");
 	while(1) {
