@@ -152,7 +152,7 @@ int main()
 			}
 			break;
 		case 13:
-			printf("Enter two node index to swap\n");
+			printf("Enter two node index to swap. Index should start from 0.\n");
 			scanf("%d%d",&idx1,&idx2);
 			if (idx1 < 0 || idx2 < 0) {
 				printf("Invalid Index parameter.It will be > 0\n");
