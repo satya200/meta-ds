@@ -7,6 +7,128 @@
 
 static FILE *log_fp = NULL;
 
+/*
+Name: Function to find the largest and second largest in linklist.
+Parameters: 
+      head = Starting Node of linklist
+Return:
+      -1  on Error 
+       0  on Success
+*/
+int findLargest_secondLargest(single_ll_t *head)
+{
+
+	if (head == NULL) {
+		printf("List is Empty\n");
+		return -1;
+	}
+
+	single_ll_t *secondLargest = head;
+	single_ll_t *largest = head;
+	single_ll_t *traverse = head;
+	
+	while (traverse->next) {
+		if ((largest->data).data < (traverse->next->data).data) {
+			secondLargest = largest;
+			largest = traverse->next;
+		} else {
+			/* If only two elements are there in list */
+			if ((secondLargest == largest) && (traverse->next->next == NULL))
+				secondLargest = traverse->next;
+			if ((secondLargest->data).data < (traverse->next->data).data) {
+				secondLargest = traverse->next;			
+			}
+		}		
+		traverse = traverse->next;
+	}	
+	
+	printf("Largest = %d SecondLargest = %d\n",(largest->data).data,(secondLargest->data).data);
+	return 0;
+
+}
+
+/*
+Name: Function to swap two nodes based on the given position in linklist.
+Parameters: 
+      head = Starting Node of linklist
+      pos1 = position of first node which is to be swapped 
+      pos2 = position of second node which is to be swapped
+
+Return:
+      -1  on Error 
+       0  on Success
+*/
+int swap_node(single_ll_t **head, int pos1, int pos2)
+{
+        
+	if ((head == NULL) || (*head == NULL)) {
+		ERR_PRINT("%s:%d :head value is NULL\n",__FUNCTION__,__LINE__);
+		return -1;	
+	}
+	else if ((*head)->next == NULL) {
+                ERR_PRINT("%s:%d :Insufficient data in list to swap.\n",__FUNCTION__,__LINE__);
+                return -1;
+        }
+
+	single_ll_t *pos1_pre_node = NULL,
+		    *pos2_pre_node = NULL,
+		    *pos1_node = NULL, 
+		    *pos2_node = NULL,
+		    *temp = NULL, 
+		    *head_t = *head,
+		    *newHead = *head;
+	int count = 0;
+
+	if (pos1 == pos2) {
+		DATA_PRINT("%s:%d :Input Position1 and Position2 are same.\n",__FUNCTION__,__LINE__);
+		return 0;
+	}
+
+	while (head_t->next) {
+		if (pos1 == (count +1)){
+			pos1_pre_node = head_t;
+			pos1_node = head_t->next;
+		}				
+		if (pos2 == (count +1)) {
+			pos2_pre_node = head_t;
+			pos2_node = head_t->next;	
+		}										
+		count++;
+		head_t = head_t->next;
+	}
+
+	if (pos1 == 0) {
+		pos1_node = *head;
+		newHead = pos2_node;	
+	}
+	else if (pos2 == 0) {
+		pos2_node = *head;
+		newHead = pos1_node;	
+	}
+	
+	if ( (pos1_node== NULL) || (pos2_node == NULL))	{
+		ERR_PRINT("%s:%d :Invalid position to swap.\n",__FUNCTION__,__LINE__);
+		return -1; 
+	}			
+	
+	temp = pos2_node->next;
+	if (NULL != pos1_pre_node)
+		pos1_pre_node->next = pos2_node;
+
+	if (pos1_node->next == pos2_node) {
+		pos2_node->next = pos1_node;	
+	} else {
+		pos2_node->next = pos1_node->next;
+		if (NULL != pos2_pre_node)
+			pos2_pre_node->next = pos1_node;
+	}
+
+	pos1_node->next = temp;
+	*head = newHead;
+	return 0;
+	
+}
+
 int insert_last(single_ll_t **head, const struct Data data)
 {
 	log_fp = stdout;

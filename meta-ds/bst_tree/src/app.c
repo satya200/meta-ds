@@ -3,47 +3,37 @@
 * mail id:- tinkusahu.com@gmail.com
 */
 
-#include <single_head.h>
+#include <bst_head.h>
 
 int main()
 {
 	int choice;
 	int ret = -1;
-	single_ll_t *head = NULL;
-	single_ll_t *temp = NULL;
+	BST *root = NULL;
+	//BST *temp = NULL;
 	struct Data val;
-	int data;
-	int node;
-	int idx1 = -1, idx2 = -1;
+	//int data;
+	//int node;
 
-	printf("WELCOME TO SINGLE LINKLIST DATA STRUCTURE\n");
+	printf("WELCOME TO BINARY SEARCH TREE\n");
 	while(1) {
 		printf("PLEASE ENTER UR CHOICE:\n");
-		printf("0: Total App Exit\n1: for insert last\n2: for print all\n3: insert fast\n4: insert middle\n\
-5: Delete node\n6: Swap 2 adj node\n7: Find Middle Node\n8: check loop\n9: create loop\n10: Find length\n11: reverse\n\
-12: check palindrome\n13: Swap any Node\n14: Find largest and Second largest data in list\n");
+		printf("0: Total App Exit\n1: for insert tree\n2: for print all\n5: Delete node\n6: Find length\n");
 		scanf("%d",&choice);
 		switch (choice) {
 		case 1:
 			printf("Enter data:");
 			scanf("%d",&val.data);
-			ret = traverse_list(head, -1, &temp);
-			printf("======>main in tarverse:%d\n",ret);
-			if (ret == -1) {
-				ret = insert_last(&head, val);
-				if (ret == 0) {
-					temp = head;
-					printf("Insert fast node and update temp\n");
-				}
-			} else {
-				ret = insert_last(&temp, val);
+			ret = bst_insert_node(&root, val);
+			if (ret == 0) {
+				printf("Node inserted\n");
 			}
-			printf("=======>main in last insert:%d\n",ret);
 			break;
 		case 2:
-			ret = print_list(head);
+			ret = bst_print_list(root);
 			printf("in print:%d\n",ret);
 			break;
+#if 0
 		case 3:
 			printf("Enter data");
 			scanf("%d",&val.data);
@@ -151,34 +141,13 @@ int main()
 				printf("It is not palindrome\n");
 			}
 			break;
-		case 13:
-			printf("Enter two node index to swap. Index should start from 0.\n");
-			scanf("%d%d",&idx1,&idx2);
-			if (idx1 < 0 || idx2 < 0) {
-				printf("Invalid Index parameter.It will be > 0\n");
-				break;
-			}
-			ret = swap_node(&head, idx1, idx2);
-			if (ret == 0) {
-				printf("Swap node success\n");
-			} else {
-				printf("swap is failed\n");
-			}
-			break;
-		case 14:
-			ret = findLargest_secondLargest(head);
-			if (ret == 0) {
-				printf("Find largest Success\n");
-			} else {
-				printf("Find largest failed\n");
-			}
-			break;
+#endif
 		case 0:
-			exist_list(&head);
+			bst_exit(&root);
 			return 0;
 			
 		default:
-			exist_list(&head);
+			printf("Invalid choice\n");
 			break;
 		}
 	}
