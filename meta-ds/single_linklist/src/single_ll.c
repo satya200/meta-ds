@@ -32,7 +32,8 @@ int findLargest_secondLargest(single_ll_t *head)
 			secondLargest = largest;
 			largest = traverse->next;
 		} else {
-			if ((secondLargest == largest) && (traverse->next->next == NULL))// if only two elements are there in list
+			/* If only two elements are there in list */
+			if ((secondLargest == largest) && (traverse->next->next == NULL))
 				secondLargest = traverse->next;
 			if ((secondLargest->data).data < (traverse->next->data).data) {
 				secondLargest = traverse->next;			
@@ -69,7 +70,13 @@ int swap_node(single_ll_t **head, int pos1, int pos2)
                 return -1;
         }
 
-	single_ll_t *pos1_pre_node = NULL, *pos2_pre_node = NULL, *pos1_node = NULL, *pos2_node = NULL, *temp = NULL, *head_t = *head, *newHead = *head;
+	single_ll_t *pos1_pre_node = NULL,
+		    *pos2_pre_node = NULL,
+		    *pos1_node = NULL, 
+		    *pos2_node = NULL,
+		    *temp = NULL, 
+		    *head_t = *head,
+		    *newHead = *head;
 	int count = 0;
 
 	if (pos1 == pos2) {
@@ -108,9 +115,13 @@ int swap_node(single_ll_t **head, int pos1, int pos2)
 	if (NULL != pos1_pre_node)
 		pos1_pre_node->next = pos2_node;
 
-	pos2_node->next = pos1_node->next;
-	if (NULL != pos2_pre_node)
-		pos2_pre_node->next = pos1_node;
+	if (pos1_node->next == pos2_node) {
+		pos2_node->next = pos1_node;	
+	} else {
+		pos2_node->next = pos1_node->next;
+		if (NULL != pos2_pre_node)
+			pos2_pre_node->next = pos1_node;
+	}
 
 	pos1_node->next = temp;
 	*head = newHead;
