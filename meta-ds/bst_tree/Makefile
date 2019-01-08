@@ -3,13 +3,9 @@
 MKDIR = mkdir -p
 COPY = cp -r
 
-LIB_DIR = ${libdir}
-BIN_DIR = ${bindir}
-ETC_DIR = ${sysconfdir}
-INCLUDE_DIR = ${includedir}
 
 LOCAL_IFLAGS = -I./include/ 
-LOCAL_CFLAGS = -fPIC -Wall -Werror ${LOCAL_IFLAGS}
+LOCAL_CFLAGS = -fPIC -Wall -Werror -lDataStructure ${LOCAL_IFLAGS}
 LOCAL_LFLAGS = 
 
 TARGET = bst
@@ -18,10 +14,10 @@ TARGET = bst
 objs = src/app.o src/bst.o
 
 %.o: %.c
-	$(CC) -c $< -o $@ $(LOCAL_CFLAGS) ${GLOBAL_IFLAGS}
+	$(CC) -c $< -o $@ $(LOCAL_CFLAGS) ${GLOBAL_IFLAGS} -lDataStructure
 
 ${TARGET}:${objs}
-	${CC} $^ -o $@  ${LOCAL_LFLAGS} ${GLOBAL_LFLAGS}
+	${CC} $^ -o $@  ${LOCAL_LFLAGS} ${GLOBAL_LFLAGS} -lDataStructure
 
 
 .PHONY: install clean

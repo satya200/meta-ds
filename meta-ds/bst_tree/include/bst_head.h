@@ -8,6 +8,11 @@
 #include <string.h>
 #include <unistd.h>
 
+/* Below Macro value 1 : Implementation using recurssion
+		     0 : With out Recurssion 
+*/
+#define NO_REC 0
+
 struct Data
 {
 	int data;
@@ -39,6 +44,7 @@ typedef enum error_t {
 int bst_insert_node(BST **, struct Data);
 int bst_print_list(BST *);
 int bst_exit(BST **root);
+int bst_init();
 /*int traverse_list(BST *, int, single_ll_t **);
 void exist_list(single_ll_t **);
 int del_list(single_ll_t **head, int node_idx, int pos);

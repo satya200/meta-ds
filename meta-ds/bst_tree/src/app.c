@@ -15,11 +15,13 @@ int main()
 	//int data;
 	//int node;
 
+	printf("return:-%d\n",bst_init());
 	printf("WELCOME TO BINARY SEARCH TREE\n");
 	while(1) {
 		printf("PLEASE ENTER UR CHOICE:\n");
 		printf("0: Total App Exit\n1: for insert tree\n2: for print all\n5: Delete node\n6: Find length\n");
 		scanf("%d",&choice);
+		//printf("return:-%d\n",bst_init());
 		switch (choice) {
 		case 1:
 			printf("Enter data:");

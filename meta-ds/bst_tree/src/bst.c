@@ -1,6 +1,8 @@
-#include <bst_head.h>
+//#include <bst_head.h>
+#include <mystack_bst.h>
 
 static FILE *log_fp = NULL;
+struct stack_user bst_stack_user;
 
 /*
 *  insert_node():
@@ -47,9 +49,34 @@ int preorder(BST *root)
 		//ERR_PRINT("root is NULL\n");
 		return NULL_POINTER;
 	}
+#if NO_REC
 	printf("%d | ",root->data.data);
 	preorder(root->left);
 	preorder(root->right);
+#else
+	int ret = -1;
+	struct data root_stack;
+	root_stack.data_bst = root;
+	while(1) {
+		while(root) {
+			sleep(1);
+			printf("P=>%d | ",root->data.data);
+			bst_stack_user.sop.push(root_stack);
+			root = root->left;
+			root_stack.data_bst = root;
+		}
+		ret = bst_stack_user.sop.pop(&root_stack);
+		if (ret == 0) {
+			printf("data success pop\n");
+			root = root_stack.data_bst;
+		} else {
+			printf("error or underflow:%d\n",ret);
+			break;
+		}
+		root = root->right;
+		root_stack.data_bst = root;
+	}
+#endif
 	return SUCCESS;
 }
 
@@ -61,9 +88,11 @@ int postorder(BST *root)
 		//ERR_PRINT("root is NULL\n");
 		return NULL_POINTER;
 	}
+//#if NO_REC
 	postorder(root->left);
 	postorder(root->right);
 	printf("%d | ",root->data.data);
+//#endif
 	return SUCCESS;
 }
 
@@ -75,9 +104,11 @@ int inorder(BST *root)
 		//ERR_PRINT("root is NULL\n");
 		return NULL_POINTER;
 	}
+//#if NO_REC
 	inorder(root->left);
 	printf("%d | ",root->data.data);
 	inorder(root->right);
+//#endif
 	return SUCCESS;
 }
 
@@ -110,4 +141,18 @@ int bst_exit(BST **root)
 	free(*root);
 	*root = NULL;
 	return SUCCESS;
+}
+
+int bst_init()
+{
+	int ret = -1;
+	bst_stack_user.stack_size = 10;
+	ret = create_stack(&bst_stack_user);
+	if (ret == 0) {
+		printf("create_stack() return success\n");
+		ret = 0;
+	} else {
+		printf("create_stack() return Fail. Please go to Recurssion methode\n");
+	}
+	return ret;
 }
