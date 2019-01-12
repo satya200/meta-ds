@@ -43,6 +43,7 @@ typedef enum error_t {
 
 int bst_insert_node(BST **, struct Data);
 int bst_print_list(BST *);
+int bst_max_value(BST *);
 int bst_exit(BST **root);
 int bst_init();
 /*int traverse_list(BST *, int, single_ll_t **);
