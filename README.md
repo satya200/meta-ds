@@ -42,6 +42,9 @@ This repo contains all data structures program.
 5. Folder bst_tree
 	This Folder contains binary search tree.
 
+6. Folder queue
+	This Folder contains Queue Implementation.
+
 
 Steps To Build:
 ----------------

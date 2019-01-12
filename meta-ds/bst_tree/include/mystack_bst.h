@@ -1,11 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <bst_head.h>
 
 #define MAX_STACK_SIZE 100
 
 struct data {
-	int data;
+	BST *data_bst;
 };
 
 struct stack_operation {
