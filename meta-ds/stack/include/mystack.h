@@ -10,7 +10,7 @@ struct data {
 
 struct stack_operation {
 	void (*destroy_stack)();
-	int (*push)(struct stack_user *, struct data);
+	int (*push)(struct data);
 	int (*pop)(struct data *);
 	void (*print_stack)();
 	int (*free_space)();
