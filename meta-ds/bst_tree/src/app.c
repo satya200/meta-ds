@@ -19,7 +19,7 @@ int main()
 	printf("WELCOME TO BINARY SEARCH TREE\n");
 	while(1) {
 		printf("PLEASE ENTER UR CHOICE:\n");
-		printf("0: Total App Exit\n1: for insert tree\n2: for print all\n3:Find Max Element in Tree\n");
+		printf("0: Total App Exit\n1: for insert tree\n2: for print all\n3:Find Max Element in Tree\n4: No of leaves node\n5: No of Full Node\n6: Find Ancestor\n");
 		scanf("%d",&choice);
 		switch (choice) {
 		case 1:
@@ -43,39 +43,35 @@ int main()
 				printf("Maximum Element in BST:%d\n",ret);
 			}
 			break;
-#if 0
 		case 4:
-			printf("Enter data and node:");
-			scanf("%d%d",&val.data,&node);
-			ret = insert_middle(head,node,val);
-			if (ret == 0 && ret == 1) {
-				printf("Function success\n");
+			printf("Going to print no of leave node means the node\nwhich does not have any children\n");
+			ret = bst_no_of_leavenode(root);
+			if (ret < 0) {
+				printf("return error in %s\n",__FUNCTION__);
 			} else {
-				printf("=======> main insert_middle() FAIL\n");
+				printf("No of leaves node is===>: %d\n",ret);
 			}
 			break;
 		case 5:
-			printf("Enter node idx:");
-			scanf("%d",&node);
-			printf("Enter  position[0 -middle\n 1 - fast\n 2 - last\n] and node no\n");
-			scanf("%d",&data);
-			ret = del_list(&head, node - 1, data);
-			if (ret == 0) {
-				printf("In main finc Delete success\n");
+			printf("Going to print no of full node means the node\nwhich is  haveing 2 children\n");
+			ret = bst_no_of_fullnode(root);
+			if (ret < 0) {
+				printf("return error in %s\n",__FUNCTION__);
 			} else {
-				printf("In main Error in Delet:ret=%d\n",ret);
+				printf("No of full node is: %d\n",ret);
 			}
 			break;
-				break;
-			}
-		case 11:
-			ret = reverse_list(&head);
+		case 6:
+			printf("Please enter data for ancestor:");
+			scanf("%d",&ret);
+			ret = bst_ancestor(root, ret);
 			if (ret == 0) {
-				printf("Reverse Done\n");
+				printf("Ancestor Printed\n");
 			} else {
-				printf("Error in Rev\n");
+				printf("Ancestor not found or error\n");
 			}
 			break;
+#if 0
 		case 12:
 			ret = sl_check_palindrome(head);
 			if (ret == 0) {

@@ -52,6 +52,8 @@ Steps To Build:
 	created inside meta-ds/<respective> Folder
 	To Build lib:
 	---------------
+		0> Copy libDatastructure to your /usr/lib Folder using sudo.
+		   And Follow Below Steps.
 		1> make -> inside meta-ds folder
 		2> make lib -> Create shared lib in current folder
 		3> Put this Lib inside /usr/lib

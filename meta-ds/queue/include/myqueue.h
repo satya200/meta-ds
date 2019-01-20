@@ -31,3 +31,4 @@ int q_insert(struct queue_user *q, struct data data);
 int q_del(struct queue_user *q, struct data *q_read);
 void destroy_q(struct queue_user *q);
 int q_free_space(struct queue_user q);
+int is_empty_queue(struct queue_user *q);
