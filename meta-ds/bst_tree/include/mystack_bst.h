@@ -21,4 +21,21 @@ struct stack_user {
 	struct stack_operation sop;
 };
 
+struct queue_user {
+        size_t queue_size;
+        int front;
+        int rear;
+        struct data *data;
+        //struct queue_operation sop;
+
+};
+
+int create_queue(struct queue_user *);
+int q_insert(struct queue_user *q, struct data data);
+int q_del(struct queue_user *q, struct data *q_read);
+void destroy_q(struct queue_user *q);
+int q_free_space(struct queue_user q);
+int bst_no_of_leavenode(BST *root);
+int bst_no_of_fullnode(BST *root);
+
 int create_stack(struct stack_user *);

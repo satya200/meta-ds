@@ -49,15 +49,15 @@ int main()
 					printf("Error\n");
 				}
 				break;
-			/*case 3:
-				stack_data.sop.print_stack();
+			case 3:
+				printf("Not Implemented. Need to call Delete for print");
 				break;
 			case 4:
-				printf("free space: %d\n",stack_data.sop.free_space());
+				printf("free space: %d\n",q_free_space(q_data));
 				break;
 			case 0:
-				stack_data.sop.destroy_stack();
-				exit(0);*/
+				destroy_q(&q_data);
+				exit(0);
 			default:
 				printf("Unknown case\n");
 				

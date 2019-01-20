@@ -9,17 +9,20 @@ Description:
 
 
 /* This Function will destroy Queue */
-/*
-void destroy_q()
+void destroy_q(struct queue_user *q)
 {
-	if (stack_ptr != NULL) {
-		free(stack_ptr);
-		stack_ptr = NULL;
+	if (q == NULL) {
+		printf("NULL Pointer in destroy_q()\n");
+		return;
+	}
+	if (q->data != NULL) {
+		free(q->data);
+		q->data = NULL;
 	} else {
-		printf("Stack is empty. stack pointer is NULL");
+		printf("Queue is empty. Queue data pointer is NULL");
 	}
 }
-*/
+
 int is_full_queue(struct queue_user *q)
 {
 	if (q == NULL) {
@@ -51,6 +54,7 @@ int q_insert(struct queue_user *q, struct data data)
 	return 0;
 }
 
+/* Checking Queue is Empty or not */
 int is_empty_queue(struct queue_user *q)
 {
 	if (q == NULL) {
@@ -80,7 +84,6 @@ int q_del(struct queue_user *q, struct data *q_read)
 	} else {
 		idx = q->front;
 		memcpy(q_read, &(q->data[idx]), sizeof(struct data));
-		//memset(&stack_ptr[idx], '\0', sizeof(struct data));
 		if (q->front == q->rear) {
 			q->front = q->rear = -1;
 		} else {
@@ -89,30 +92,33 @@ int q_del(struct queue_user *q, struct data *q_read)
 	}
 	return 0;
 }
-
 #if 0
-void q_print()
+void q_print(struct queue_user *q, struct data *q_read)
 {
-	int idx = stack_idx;
+	int idx;
 	int i;
-	printf("	********* STACK DATA ****************\n");
+	if (q == NULL && q_read == NULL) {
+		printf("NULL pointer q_print\n");
+		return -1;
+	}
+	printf("	********* QUEUE DATA ****************\n");
 	if (idx < 0) {
-		printf("	STACK IS EMPTY\n");
+		printf("	Queue Is Empty\n");
 	} else {
 		printf("	");
 		for (i = 0; i <= idx; i++) {
 			printf("%d | ",stack_ptr[i].data);
 		}
 	}
-	printf("\n	********* STACK DATA END *************\n");
-}
-
-int q_free_space()
-{
-	printf("%lu:%d\n",stack_max_size, stack_idx);
-	return (stack_max_size - stack_idx - 1);
+	printf("\n	********* Queue Data End *************\n");
 }
 #endif
+
+int q_free_space(struct queue_user q)
+{
+	printf("%lu:%d:%d\n",q.queue_size, q.front, q.rear);
+	return (q.queue_size - (q.rear - q.front) - 1);
+}
 
 int create_queue(struct queue_user *q_ptr_usr)
 {
