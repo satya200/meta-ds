@@ -28,7 +28,8 @@ int main()
 			case 1:
 				printf("Emter data");
 				scanf("%d",&data1.data);
-				ret = stack_data.sop.push(data1);
+				//ret = stack_data.sop.push(&stack_data,data1);
+				ret = push(&stack_data,data1);
 				if (ret == 0) 
 					printf("success\n");
 				else if (ret == 1) {
@@ -38,7 +39,8 @@ int main()
 				}
 				break;
 			case 2:
-				ret = stack_data.sop.pop(&data1);
+				//ret = stack_data.sop.pop(&stack_data,&data1);
+				ret = pop(&stack_data,&data1);
 				if (ret == 0) 
 					printf("success data:%d\n",data1.data);
 				else if (ret == 1) {
@@ -48,13 +50,16 @@ int main()
 				}
 				break;
 			case 3:
-				stack_data.sop.print_stack();
+				//stack_data.sop.print_stack(&stack_data);
+				print_stack(&stack_data);
 				break;
 			case 4:
-				printf("free space: %d\n",stack_data.sop.free_space());
+				//printf("free space: %d\n",stack_data.sop.free_space(stack_data));
+				printf("free space: %d\n",stack_free_space(stack_data));
 				break;
 			case 0:
-				stack_data.sop.destroy_stack();
+				//stack_data.sop.destroy_stack(&stack_data);
+				destroy_stack(&stack_data);
 				exit(0);
 			default:
 				printf("Unknown case\n");

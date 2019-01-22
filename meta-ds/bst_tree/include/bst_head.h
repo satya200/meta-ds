@@ -11,7 +11,7 @@
 /* Below Macro value 1 : Implementation using recurssion
 		     0 : With out Recurssion 
 */
-#define NO_REC 0
+#define NO_REC 1
 
 struct Data
 {
