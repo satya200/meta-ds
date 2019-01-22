@@ -73,12 +73,14 @@ int preorder(BST *root)
 		while(root) {
 			//sleep(1);
 			printf("P=>%d | ",root->data.data);
-			bst_stack_user.sop.push(root_stack);
+			//bst_stack_user.sop.push(root_stack);
+			push(&bst_stack_user, root_stack);
 			root = root->left;
 			root_stack.data_bst = root;
 		}
 		memset(&root_stack, '\0', sizeof(root_stack));
-		ret = bst_stack_user.sop.pop(&root_stack);
+		//ret = bst_stack_user.sop.pop(&root_stack);
+		ret = pop(&bst_stack_user, &root_stack);
 		if (ret == 0) {
 			printf("data success pop\n");
 			root = root_stack.data_bst;
