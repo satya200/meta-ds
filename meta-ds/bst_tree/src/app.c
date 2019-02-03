@@ -3,29 +3,50 @@
 * mail id:- tinkusahu.com@gmail.com
 */
 
+#include <signal.h>
+#include <unistd.h>
+#include <sys/types.h>
 #include <bst_head.h>
+
+BST *root = NULL;
+
+void sig_handler(int signum, siginfo_t *info, void *ptr)
+{
+	printf("Received signal %d\n", signum);
+	printf("Signal originates from process %lu\n",(unsigned long)info->si_pid);
+	bst_exit(&root);
+	exit(0);
+}
 
 int main()
 {
-	int choice;
+	int choice,data;
 	int ret = -1;
-	BST *root = NULL;
+	//BST *root = NULL; //Declare as Global to handle memory leak in intrupt trigger
 	//BST *temp = NULL;
 	struct Data val;
-	
+
+	struct sigaction act;
+	printf("PROCESS ID:%u\n",getpid());
+	memset(&act, '\0', sizeof(act));
+	act.sa_sigaction = sig_handler;
+	act.sa_flags = SA_SIGINFO;
+	//act.sa_mask = ;
+	sigaction(2, &act, NULL);
+
 	printf("please enter tree hight:");
 	scanf("%d",&choice);
 	printf("return:-%d\n",bst_init(choice));
 	printf("WELCOME TO BINARY SEARCH TREE\n");
 	while(1) {
 		printf("PLEASE ENTER UR CHOICE:\n");
-		printf("0: Total App Exit\n1: for insert tree\n2: for print all\n3:Find Max Element in Tree\n4: No of leaves node\n5: No of Full Node\n6: Find Ancestor\n");
+		printf("0: Total App Exit\n1: for insert tree\n2: for print all\n3:Find Max Element in Tree\n4: No of leaves node\n5: No of Full Node\n6: Find Ancestor\n7: Find Height of Tree\n8: Find level of a node\n");
 		scanf("%d",&choice);
 		switch (choice) {
 		case 1:
 			printf("Enter data:");
 			scanf("%d",&val.data);
-			ret = bst_insert_node(&root, val);
+			ret = bst_insert_node(&root, val, NULL);
 			if (ret == 0) {
 				printf("Node inserted\n");
 			}
@@ -69,6 +90,27 @@ int main()
 				printf("Ancestor Printed\n");
 			} else {
 				printf("Ancestor not found or error\n");
+			}
+			break;
+		case 7:
+			if (root) {
+				printf("%d\n",bst_height(root));
+			} else {
+				printf("Tree is Empty. Please Insert Node\n");
+			}
+			break;
+		case 8:
+			printf("Please enter data:");
+			scanf("%d",&data);
+			if (root) {
+				ret = bst_find_level(root, data);
+				if (ret > 0) {
+					printf("Level of Node is :%d\n",ret);
+				} else {
+					printf("Level not foud. Please find out error code in header file:%d\n",ret);
+				}
+			} else {
+				printf("Tree is Empty\n");
 			}
 			break;
 #if 0

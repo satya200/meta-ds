@@ -12,8 +12,10 @@ int is_empty_queue(struct queue_user *);
 *	This Function will insort node in tree.
 *	@root:- This the root Node.
 *	@data:- This contains user data to be inserted in tree
+*	@parent:- This is holds parent node address. This very much use full
+		  if you want to move backward direction in tree.
 */
-int bst_insert_node(BST **root, struct Data data)
+int bst_insert_node(BST **root, struct Data data, BST *parent)
 {
 	log_fp = stdout;
 
@@ -27,7 +29,13 @@ int bst_insert_node(BST **root, struct Data data)
 			ERR_PRINT("malloc return NULL\n");
 			return NULL_POINTER;
 		}
-
+		
+		(*root)->parent = parent;
+		if (parent) {
+			(*root)->level = (parent->level + 1);
+		} else {
+			(*root)->level = 0;
+		}
 		(*root)->left = NULL;
 		(*root)->right = NULL;
 
@@ -37,11 +45,56 @@ int bst_insert_node(BST **root, struct Data data)
 		return SUCCESS;
 	}
 	if (data.data > (*root)->data.data) {
-		bst_insert_node(&((*root)->right), data);
+		bst_insert_node(&((*root)->right), data, (*root));
 	} else if (data.data <= (*root)->data.data) {
-		bst_insert_node(&((*root)->left), data);
+		bst_insert_node(&((*root)->left), data, (*root));
 	}
 	return SUCCESS;
+}
+
+/* bst_find_level():
+	This function will find out the level of a node.
+	@root: This is root node
+	@data: Node to find out level
+*/
+int bst_find_level(BST *root, int data)
+{
+	int level = -1;
+	if (root == NULL) {
+		return NULL_POINTER;
+	}
+	if (root->data.data == data) {
+		printf("Data Found\n");
+		level = root->level;
+	} else {
+		if (data < (root->data.data)) {
+			level = bst_find_level(root->left, data);
+		} else {
+			level = bst_find_level(root->right, data);
+		}
+	}
+	return level;
+}
+/* bst_height():-
+	This Function will give height of tree
+*/
+int bst_height(BST *root)
+{
+	int left = 0,
+	    right = 0;
+
+	if (root == NULL) {
+		return 0;
+	}
+	left = bst_height(root->left);
+	right = bst_height(root->right);
+	if (left >= right) {
+		printf("left:%d\n",left+1);
+		return left+1;
+	} else {
+		printf("right:%d\n",right+1);
+		return right+1;
+	}
 }
 
 /*int bst_zigzag_print(BST *root)
@@ -190,6 +243,9 @@ int bst_max_value(BST *root)
 	return max_element;
 }
 
+/* Below Function Will give no of node which does not 
+   have ant children 
+*/
 int bst_no_of_leavenode(BST *root)
 {
 	int ret = -1, count = 0;
@@ -229,6 +285,9 @@ int bst_no_of_leavenode(BST *root)
 	return count;	
 }
 
+/* Below Function Will give no of node which is 
+   haveing 2 children 
+*/
 int bst_no_of_fullnode(BST *root)
 {
 	int ret = -1, count = 0;
