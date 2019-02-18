@@ -12,8 +12,10 @@ int is_empty_queue(struct queue_user *);
 *	This Function will insort node in tree.
 *	@root:- This the root Node.
 *	@data:- This contains user data to be inserted in tree
+*	@parent:- This is holds parent node address. This very much use full
+		  if you want to move backward direction in tree.
 */
-int bst_insert_node(BST **root, struct Data data)
+int bst_insert_node(BST **root, struct Data data, BST *parent)
 {
 	log_fp = stdout;
 
@@ -27,7 +29,13 @@ int bst_insert_node(BST **root, struct Data data)
 			ERR_PRINT("malloc return NULL\n");
 			return NULL_POINTER;
 		}
-
+		
+		(*root)->parent = parent;
+		if (parent) {
+			(*root)->level = (parent->level + 1);
+		} else {
+			(*root)->level = 0;
+		}
 		(*root)->left = NULL;
 		(*root)->right = NULL;
 
@@ -37,18 +45,142 @@ int bst_insert_node(BST **root, struct Data data)
 		return SUCCESS;
 	}
 	if (data.data > (*root)->data.data) {
-		bst_insert_node(&((*root)->right), data);
+		bst_insert_node(&((*root)->right), data, (*root));
 	} else if (data.data <= (*root)->data.data) {
-		bst_insert_node(&((*root)->left), data);
+		bst_insert_node(&((*root)->left), data, (*root));
 	}
 	return SUCCESS;
 }
 
-/*int bst_zigzag_print(BST *root)
+/* bst_find_level():
+	This function will find out the level of a node.
+	@root: This is root node
+	@data: Node to find out level
+*/
+int bst_find_level(BST *root, int data)
+{
+	int level = -1;
+	if (root == NULL) {
+		return NULL_POINTER;
+	}
+	if (root->data.data == data) {
+		printf("Data Found\n");
+		level = root->level;
+	} else {
+		if (data < (root->data.data)) {
+			level = bst_find_level(root->left, data);
+		} else {
+			level = bst_find_level(root->right, data);
+		}
+	}
+	return level;
+}
+/* bst_height():-
+	This Function will give height of tree
+*/
+int bst_height(BST *root)
+{
+	int left = 0,
+	    right = 0;
+
+	if (root == NULL) {
+		return 0;
+	}
+	left = bst_height(root->left);
+	right = bst_height(root->right);
+	if (left >= right) {
+		printf("left:%d\n",left+1);
+		return left+1;
+	} else {
+		printf("right:%d\n",right+1);
+		return right+1;
+	}
+}
+
+void swap_data(struct stack_user *current, struct stack_user *nextlev)
+{
+	struct stack_user temp;
+	//printf("i am in swap\n");
+	memset(&temp, '\0', sizeof(temp));
+	memcpy(&temp, current, sizeof(temp));
+	memcpy(current, nextlev, sizeof(temp));
+	memcpy(nextlev, &temp, sizeof(temp));
+}
+
+int bst_zigzag_print(BST *root)
 {
 	int ret = -1;
+	int left_to_right = 1;
+	BST *temp = NULL;
+	struct data temp_stack,temp_stack_read;
+	struct stack_user current_stack_user;
+	struct stack_user nextlevel_stack_user;
+
+	current_stack_user.stack_size = 10;
+	nextlevel_stack_user.stack_size = 10;
+	if (root == NULL) {
+		return NULL_POINTER;
+	}
+	ret = create_stack(&current_stack_user);
+        if (ret == 0) {
+                printf("create_stack() return success\n");
+                ret = 0;
+        } else {
+                printf("create_stack() return Fail. Please go to Recurssion methode\n");
+        }
+
+	ret = create_stack(&nextlevel_stack_user);
+        if (ret == 0) {
+                printf("create_stack() return success\n");
+                ret = 0;
+        } else {
+                printf("create_stack() return Fail. Please go to Recurssion methode\n");
+        }
+	temp_stack.data_bst = root;
+	ret = push(&current_stack_user, temp_stack);
+	if (ret != 0) {
+		printf("stack push return %d\n",ret);
+		ret = -1;
+	} else {
+		while (current_stack_user.stack_idx != -1) {
+			//printf("1====<cur=%d:nex:%d\n",current_stack_user.stack_idx, nextlevel_stack_user.stack_idx);
+			pop(&current_stack_user, &temp_stack_read);
+			temp = temp_stack_read.data_bst;
+			if (temp) {
+				printf("%d: ",temp->data.data);
+			}
+			if (left_to_right) {
+				if (temp->left) {
+					temp_stack.data_bst = temp->left;
+					ret = push(&nextlevel_stack_user, temp_stack);
+				}
+				if (temp->right) {
+					temp_stack.data_bst = temp->right;
+					ret = push(&nextlevel_stack_user, temp_stack);
+				} 
+			} else {
+				if (temp->right) {
+					temp_stack.data_bst = temp->right;
+					ret = push(&nextlevel_stack_user, temp_stack);
+				}
+				if (temp->left) {
+					temp_stack.data_bst = temp->left;
+					ret = push(&nextlevel_stack_user, temp_stack);
+				} 
+			}
+			//printf("2===<cur=%d:nex:%d\n",current_stack_user.stack_idx, nextlevel_stack_user.stack_idx);
+			if (current_stack_user.stack_idx == -1) {
+				left_to_right = 1 - left_to_right;
+				swap_data(&current_stack_user, &nextlevel_stack_user);
+			}
+			//printf("3===<cur=%d:nex:%d\n",current_stack_user.stack_idx, nextlevel_stack_user.stack_idx);
+		}
+			
+	}
+	printf("\n");
+	return 0;
 }
-*/
+
 int preorder(BST *root)
 {
 	//int ret = -1;
@@ -140,6 +272,7 @@ int bst_print_list(BST *root)
 		//ERR_PRINT("root is NULL\n");
 		return NULL_POINTER;
 	}
+	ret = bst_zigzag_print(root);
 	ret = preorder(root);
 	printf("\n");
 	ret = postorder(root);
@@ -190,6 +323,9 @@ int bst_max_value(BST *root)
 	return max_element;
 }
 
+/* Below Function Will give no of node which does not 
+   have ant children 
+*/
 int bst_no_of_leavenode(BST *root)
 {
 	int ret = -1, count = 0;
@@ -229,6 +365,9 @@ int bst_no_of_leavenode(BST *root)
 	return count;	
 }
 
+/* Below Function Will give no of node which is 
+   haveing 2 children 
+*/
 int bst_no_of_fullnode(BST *root)
 {
 	int ret = -1, count = 0;
@@ -292,6 +431,11 @@ int bst_ancestor(BST *root, int data)
 	return ret;
 }
 
+/* bst_init():
+	This Function is for tree init.
+	Currently stack and Queue is emplemented as static
+	TODO: Need to make Stack and Queue Dynamic
+*/
 int bst_init(int size)
 {
 	int ret = -1;

@@ -21,8 +21,10 @@ struct Data
 typedef struct bst
 {
 	struct Data data;
+	struct bst *parent;
 	struct bst *left;
 	struct bst *right;
+	int level;
 }BST;
 
 #define   DBG_PRINT(fmt, args...) \
@@ -41,7 +43,7 @@ typedef enum error_t {
 	SUCCESS = 0, 
 }err_t;
 
-int bst_insert_node(BST **, struct Data);
+int bst_insert_node(BST **, struct Data, BST *parent);
 int bst_print_list(BST *);
 int bst_max_value(BST *);
 int bst_exit(BST **root);
@@ -49,6 +51,8 @@ int bst_init();
 int bst_no_of_leavenode(BST *root);
 int bst_no_of_fullnode(BST *root);
 int bst_ancestor(BST *root, int data);
+int bst_height(BST *root);
+int bst_find_level(BST *root, int data);
 /*int traverse_list(BST *, int, single_ll_t **);
 void exist_list(single_ll_t **);
 int del_list(single_ll_t **head, int node_idx, int pos);

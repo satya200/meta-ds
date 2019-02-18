@@ -59,3 +59,8 @@ Steps To Build:
 		3> Put this Lib inside /usr/lib
 		4> Compile your App with "-lDataStructure"
 			Please refer application present inside respective module folder name app.c or main.c
+
+Steps To Run teast_app.py:
+--------------------------
+
+1> URL:- https://docs.python.org/3/library/ctypes.html
