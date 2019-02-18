@@ -97,11 +97,90 @@ int bst_height(BST *root)
 	}
 }
 
-/*int bst_zigzag_print(BST *root)
+void swap_data(struct stack_user *current, struct stack_user *nextlev)
+{
+	struct stack_user temp;
+	//printf("i am in swap\n");
+	memset(&temp, '\0', sizeof(temp));
+	memcpy(&temp, current, sizeof(temp));
+	memcpy(current, nextlev, sizeof(temp));
+	memcpy(nextlev, &temp, sizeof(temp));
+}
+
+int bst_zigzag_print(BST *root)
 {
 	int ret = -1;
+	int left_to_right = 1;
+	BST *temp = NULL;
+	struct data temp_stack,temp_stack_read;
+	struct stack_user current_stack_user;
+	struct stack_user nextlevel_stack_user;
+
+	current_stack_user.stack_size = 10;
+	nextlevel_stack_user.stack_size = 10;
+	if (root == NULL) {
+		return NULL_POINTER;
+	}
+	ret = create_stack(&current_stack_user);
+        if (ret == 0) {
+                printf("create_stack() return success\n");
+                ret = 0;
+        } else {
+                printf("create_stack() return Fail. Please go to Recurssion methode\n");
+        }
+
+	ret = create_stack(&nextlevel_stack_user);
+        if (ret == 0) {
+                printf("create_stack() return success\n");
+                ret = 0;
+        } else {
+                printf("create_stack() return Fail. Please go to Recurssion methode\n");
+        }
+	temp_stack.data_bst = root;
+	ret = push(&current_stack_user, temp_stack);
+	if (ret != 0) {
+		printf("stack push return %d\n",ret);
+		ret = -1;
+	} else {
+		while (current_stack_user.stack_idx != -1) {
+			//printf("1====<cur=%d:nex:%d\n",current_stack_user.stack_idx, nextlevel_stack_user.stack_idx);
+			pop(&current_stack_user, &temp_stack_read);
+			temp = temp_stack_read.data_bst;
+			if (temp) {
+				printf("%d: ",temp->data.data);
+			}
+			if (left_to_right) {
+				if (temp->left) {
+					temp_stack.data_bst = temp->left;
+					ret = push(&nextlevel_stack_user, temp_stack);
+				}
+				if (temp->right) {
+					temp_stack.data_bst = temp->right;
+					ret = push(&nextlevel_stack_user, temp_stack);
+				} 
+			} else {
+				if (temp->right) {
+					temp_stack.data_bst = temp->right;
+					ret = push(&nextlevel_stack_user, temp_stack);
+				}
+				if (temp->left) {
+					temp_stack.data_bst = temp->left;
+					ret = push(&nextlevel_stack_user, temp_stack);
+				} 
+			}
+			//printf("2===<cur=%d:nex:%d\n",current_stack_user.stack_idx, nextlevel_stack_user.stack_idx);
+			if (current_stack_user.stack_idx == -1) {
+				left_to_right = 1 - left_to_right;
+				swap_data(&current_stack_user, &nextlevel_stack_user);
+			}
+			//printf("3===<cur=%d:nex:%d\n",current_stack_user.stack_idx, nextlevel_stack_user.stack_idx);
+		}
+			
+	}
+	printf("\n");
+	return 0;
 }
-*/
+
 int preorder(BST *root)
 {
 	//int ret = -1;
@@ -193,6 +272,7 @@ int bst_print_list(BST *root)
 		//ERR_PRINT("root is NULL\n");
 		return NULL_POINTER;
 	}
+	ret = bst_zigzag_print(root);
 	ret = preorder(root);
 	printf("\n");
 	ret = postorder(root);
@@ -351,6 +431,11 @@ int bst_ancestor(BST *root, int data)
 	return ret;
 }
 
+/* bst_init():
+	This Function is for tree init.
+	Currently stack and Queue is emplemented as static
+	TODO: Need to make Stack and Queue Dynamic
+*/
 int bst_init(int size)
 {
 	int ret = -1;
